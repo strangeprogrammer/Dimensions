@@ -1,0 +1,11 @@
+%parse-param {int *total}
+
+%%
+recursive
+: {
+	std::cout << "EMPTY ";
+} | recursive 'a' {
+	*total+=1;
+	std::cout << "RECURSING ";
+}
+;

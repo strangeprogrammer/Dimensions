@@ -1,0 +1,118 @@
+//Test string: ()><&#~@+-%£$[]/0987654321sduxhrkjghjeyrhdf
+
+/*
+Invoke scanner with:
+Scanner scanner;
+scanner.lex()
+*/
+
+%%
+\(		{
+			#ifdef DEBUG
+			std::cout << "LPAREN ";
+			#endif /*DEBUG*/
+			return Parser::LPAREN;
+		}
+\)		{
+			#ifdef DEBUG
+			std::cout << "RPAREN ";
+			#endif /*DEBUG*/
+			return Parser::RPAREN;
+		}
+\>		{
+			#ifdef DEBUG
+			std::cout << "MFORE ";
+			#endif /*DEBUG*/
+			return Parser::MFORE;
+		}
+\<		{
+			#ifdef DEBUG
+			std::cout << "MBACK ";
+			#endif /*DEBUG*/
+			return Parser::MBACK;
+		}
+&		{
+			#ifdef DEBUG
+			std::cout << "VSTORE ";
+			#endif /*DEBUG*/
+			return Parser::VSTORE;
+		}
+#		{
+			#ifdef DEBUG
+			std::cout << "VFORE ";
+			#endif /*DEBUG*/
+			return Parser::VFORE;
+		}
+~		{
+			#ifdef DEBUG
+			std::cout << "VBACK ";
+			#endif /*DEBUG*/
+			return Parser::VBACK;
+		}
+@		{
+			#ifdef DEBUG
+			std::cout << "VZERO ";
+			#endif /*DEBUG*/
+			return Parser::VZERO;
+		}
+\+		{
+			#ifdef DEBUG
+			std::cout << "PLUS ";
+			#endif /*DEBUG*/
+			return Parser::PLUS;
+		}
+-		{
+			#ifdef DEBUG
+			std::cout << "MINUS ";
+			#endif /*DEBUG*/
+			return Parser::MINUS;
+		}
+\%		{
+			#ifdef DEBUG
+			std::cout << "INASCII ";
+			#endif /*DEBUG*/
+			return Parser::INASCII;
+		}
+£		{
+			#ifdef DEBUG
+			std::cout << "OUTNUM ";
+			#endif /*DEBUG*/
+			return Parser::OUTNUM;
+		}
+\$		{
+			#ifdef DEBUG
+			std::cout << "OUTASCII ";
+			#endif /*DEBUG*/
+			return Parser::OUTASCII;
+		}
+\[		{
+			#ifdef DEBUG
+			std::cout << "LBRKT ";
+			#endif /*DEBUG*/
+			return Parser::LBRKT;
+		}
+\]		{
+			#ifdef DEBUG
+			std::cout << "RBRKT ";
+			#endif /*DEBUG*/
+			return Parser::RBRKT;
+		}
+\/		{
+			#ifdef DEBUG
+			std::cout << "NOOP ";
+			#endif /*DEBUG*/
+			return Parser::NOOP;
+		}
+[0-9]+		{
+			#ifdef DEBUG
+			std::cout << "NUMBER ";
+			#endif /*DEBUG*/
+			return Parser::NUMBER;
+		}
+[a-zA-Z]+	{
+			#ifdef DEBUG
+			std::cout << "LETTERS ";
+			#endif /*DEBUG*/
+			return Parser::LETTERS;
+		}
+[ \n\t]+	/*ignore whitespace*/;

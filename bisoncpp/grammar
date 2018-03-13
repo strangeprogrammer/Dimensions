@@ -1,0 +1,143 @@
+%scanner "../flexcpp/Scanner.hpp"
+%scanner-token-function d_scanner.lex()
+//%parse-param {Parse *env}
+%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII LBRKT RBRKT NOOP NUMBER LETTERS
+%start commands
+
+/*
+Invoke parser with:
+Parser parser;
+parser.parse();
+*/
+
+%%
+commands
+: /*empty input stream (don't do anything since we may be in the middle of a loop)*/
+| commands command /*{
+	env->progend->appendNext($2);
+	env->progend=env->progend->next;
+	if(env->resolve){
+		env->resolve->backpop()->d->target=env->progend;
+	}
+}*/
+;
+
+command
+: LPAREN action RPAREN /*{
+	$$=$2;
+}*/
+;
+
+action
+: motion		//{$$=$1;}
+| literal_velocity	//{$$=$1;}
+| arithmetic		//{$$=$1;}
+| store_velocity	//{$$=$1;}
+| input			//{$$=$1;}
+| output		//{$$=$1;}
+| flowcontrol		//{$$=$1;}
+| noop			//{$$=$1;}
+;
+
+motion
+: LETTERS MFORE /*{
+	//Do something
+}*/ LETTERS MBACK /*{
+	//Do something else
+}*/
+;
+
+literal_velocity
+: velocity /*{
+	//Do something
+}*/
+;
+
+store_velocity
+: VSTORE velocity /*{
+	//Do something
+}*/
+;
+
+velocity
+: LETTERS /*{
+	//Do something
+}*/ VFORE LETTERS /*{
+	//Do something else
+}*/ VBACK LETTERS /*{
+	//Do something else else
+}*/ VZERO
+;
+
+arithmetic
+: NUMBER PLUS /*{
+	add temp=new add();
+	temp->d->number=atoi(yyval);
+	$$=temp;
+}*/
+| NUMBER MINUS /*{
+	sub temp=new sub();
+	temp->d->number=atoi(yyval);
+	$$=temp;
+}*/
+;
+
+input
+: INASCII /*{
+	//Do something
+}*/
+;
+
+output
+: output_number /*{
+	//Do something
+}*/
+| output_ascii /*{
+	//Do something else
+}*/
+;
+
+output_number
+: OUTNUM /*{
+	//Do something
+}*/
+;
+
+output_ascii
+: OUTASCII /*{
+	//Do something
+}*/
+;
+
+flowcontrol
+: while /*{
+	$$=$1;
+}*/
+| endwhile /*{
+	$$=$1;
+}*/
+;
+
+while
+: LBRKT /*{
+	tzj temp=new tzj();
+	env->jstack->frontpush(temp);
+	$$=temp;
+}*/
+;
+
+endwhile
+: RBRKT /*{
+	jmp temp=new jmp();
+	tzj ret=env->jstack->frontpop();
+	temp->d->target=ret;
+	env->resolve->frontpush(ret);
+	$$=temp;
+}*/
+;
+
+noop
+: NOOP /*{
+	//Do something
+}*/
+;
