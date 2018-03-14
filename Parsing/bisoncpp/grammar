@@ -1,6 +1,5 @@
-%scanner "../flexcpp/Scanner.hpp"
+%scanner "all.hpp"
 %scanner-token-function d_scanner.lex()
-//%parse-param {Parse *env}
 %token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII LBRKT RBRKT NOOP NUMBER LETTERS
 %start commands
 
@@ -12,7 +11,8 @@ parser.parse();
 
 %%
 commands
-: /*empty input stream (don't do anything since we may be in the middle of a loop)*/
+: command /*{
+}*/
 | commands command /*{
 	env->progend->appendNext($2);
 	env->progend=env->progend->next;
@@ -71,13 +71,13 @@ velocity
 
 arithmetic
 : NUMBER PLUS /*{
-	add temp=new add();
-	temp->d->number=atoi(yyval);
+	add* temp=new add();
+	temp->d->number=atoi(yyval);//Fix this so that it doesn't use 'yyval'
 	$$=temp;
 }*/
 | NUMBER MINUS /*{
-	sub temp=new sub();
-	temp->d->number=atoi(yyval);
+	sub* temp=new sub();
+	temp->d->number=atoi(yyval);//Fix this so that it doesn't use 'yyval'
 	$$=temp;
 }*/
 ;
@@ -120,7 +120,7 @@ flowcontrol
 
 while
 : LBRKT /*{
-	tzj temp=new tzj();
+	tzj* temp=new tzj();
 	env->jstack->frontpush(temp);
 	$$=temp;
 }*/
@@ -128,8 +128,8 @@ while
 
 endwhile
 : RBRKT /*{
-	jmp temp=new jmp();
-	tzj ret=env->jstack->frontpop();
+	jmp* temp=new jmp();
+	tzj* ret=env->jstack->frontpop();
 	temp->d->target=ret;
 	env->resolve->frontpush(ret);
 	$$=temp;

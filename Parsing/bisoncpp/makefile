@@ -1,3 +1,7 @@
+SUBFOLDERS	:= 
+#HEADERS	:= 
+#SOURCES	:= 
+
 #Project related
 
 parser_module.o : parser.cpp
@@ -23,10 +27,3 @@ testparser.o : testparser.cpp
 	@ #Silence make
 	echo "Compiling parser testing module..."
 	$(COMP) ./testparser.o ./testparser.cpp
-
-#Miscellaneous
-
-#TODO: Change the "*.o" here to "$(OBJECTS)" in the future
-clean :
-	@ #Silence make
-	rm -f *.o >/dev/null 2>&1 || return 0

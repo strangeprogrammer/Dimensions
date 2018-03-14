@@ -1,3 +1,7 @@
+SUBFOLDERS	:= 
+#HEADERS	:= 
+#SOURCES	:= 
+
 #Project related
 
 scanner_module.o : scanner.cpp
@@ -15,7 +19,7 @@ scanner.cpp : lexer
 	echo '#ifdef DEBUG' >>./Scanner.ihpp
 	echo '	#include "parsingTest.hpp"' >>./Scanner.ihpp
 	echo '#else /*DEBUG*/' >>./Scanner.ihpp
-	echo '	#include "../bisoncpp/Parser.hpp"' >>./Scanner.ihpp
+	echo '	#include "all.hpp"' >>./Scanner.ihpp
 	echo '#endif /*DEBUG*/' >>./Scanner.ihpp
 
 #For testing and debugging purposes
@@ -29,10 +33,3 @@ testscanner.o : testscanner.cpp
 	@ #Silence make
 	echo "Compiling scanner testing module..."
 	$(COMP) ./testscanner.o ./testscanner.cpp
-
-#Miscellaneous
-
-#TODO: Change the "*.o" here to "$(OBJECTS)" in the future
-clean :
-	@ #Silence make
-	rm -f *.o >/dev/null 2>&1 || return 0

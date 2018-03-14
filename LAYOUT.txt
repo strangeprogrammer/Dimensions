@@ -1,0 +1,95 @@
+Format:
+Directory				//Comment
+	Important Files For Building	//Another comment
+	Paired Source and Header Files	//...
+	Makefile
+	Misc Files
+	Subdirectory
+		Header Files
+		...
+
+
+
+Important Files and Default Descriptions:
+all.hpp					//Symlink to ../all.hpp
+local.hpp				//Folder-collective header file
+up.hpp					//Build chain header file link
+makefile				//For recursive building
+%.hpp					//Header corresponding to %.cpp
+
+
+
+Listing:
+Dimensions				//Main Project Directory
+	all.hpp				//Symlink to './up.hpp'
+	local.hpp			//
+	up.hpp				//Root collective header file
+	main.cpp			//Main
+	makefile			//Root makefile
+	make.i				//Included makefile (used recursively)
+	LAYOUT.txt			//You're reading it right now
+	README.txt			//Read for information on software versions used
+	Specification.png		//Specification
+	DataStructs			//Data structures used in the program
+		all.hpp			//
+		local.hpp		//
+		up.hpp			//
+		Storage.hpp		//Contains a virtual class that provides a data storage specification
+		makefile		//
+		Macro			//Large/composite data structures
+			all.hpp		//
+			local.hpp	//
+			up.hpp		//Chain header file link
+			Linear.hpp	//
+			Linear.cpp	//A generalized doubly-linked list
+			makefile	//
+		Micro			//Simple data structures
+			all.hpp		//
+			local.hpp	//
+			up.hpp		//
+			Details.hpp	//
+			Details.cpp	//Parameter information for execution blocks
+			ExecBlocks.hpp	//
+			ExecBlocks.cpp	//Runtime typing for execution blocks
+			KVP.hpp		//
+			KVP.cpp		//Key-Value Pairs
+			Node.hpp	//
+			Node.cpp	//Singly and Doubly Linked Nodes
+			makefile	//
+	Etc				//Code that doesn't go anywhere else
+		all.hpp			//
+		local.hpp		//
+		up.hpp			//
+		Globals.hpp		//Macro and extern definitions
+		Globals.cpp		//Literal constants
+		Libraries.hpp		//Standard libraries for some convenience
+		makefile		//
+	Execution			//Code related to execution (the actual interpretation)
+		all.hpp			//
+		local.hpp		//
+		up.hpp			//
+		RunEnv.hpp		//
+		RunEnv.cpp		//Class for an execution object
+		makefile		//
+	Parsing				//Chop up the input stream and make an execution chain from it
+		all.hpp			//
+		local.hpp		//
+		up.hpp			//
+		ParseEnv.hpp		//
+		ParseEnv.cpp		//Code for parameter passing to and from the scanner and parser
+		makefile		//
+		bisoncpp		//Parser
+			all.hpp		//
+			local.hpp	//
+			up.hpp		//
+			testparser.cpp	//Temporary Main for testing the parser correctness
+			grammar		//Bisonc++ source grammar file
+			makefile	//
+		flexcpp			//Scanner
+			all.hpp		//
+			local.hpp	//
+			up.hpp		//
+			parsingTest.hpp	//List of tokens to be used with the real parser
+			testscanner.cpp	//Temporary Main for testing the scanner correctness
+			lexer		//Flexc++ source regex file
+			makefile	//
