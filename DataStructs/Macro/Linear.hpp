@@ -1,5 +1,7 @@
+#include "all.hpp"
+
 namespace Linear{
-	template <typename T> class Linear{
+	template <typename T> class Tube{
 		public:
 		void frontpush(T datum);
 		T frontpop();
@@ -8,11 +10,20 @@ namespace Linear{
 		T backpop();
 		T backpeep();
 		//This function serves as an API call, an optimization layer, and an error checking layer on top of 'actualRoll'
-		bool roll(long hops);
+		void roll(long hops);
 		unsigned long getSize();
-		Linear():crux(new DLN<T>()),elements(0);
-		~Linear();
+		Tube();
+		~Tube();
 	};
-	//TODO: Implement this
-	template <typename K,typename V> class LL:public Storage,private Linear;
+	
+	template <typename K,typename V> class LL:public Storage<K,V>,private Tube<KVP<K,V>*>{
+		public:
+		void insert(KVP<K,V>* toinsert);
+		//A dumb find algorithm (for testing purposes)
+		KVP<K,V>* find(K key);
+		KVP<K,V>* remove(K key);
+		unsigned long getSize();
+		LL();
+		~LL();
+	};
 }

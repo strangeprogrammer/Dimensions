@@ -10,7 +10,7 @@ namespace Linear{
 	 * Pointers to all elements are lost upon destruction, so be careful to garbage collect properly!
 	 * Not Multithread-Safe
 	 */
-	template <typename T> class Linear{
+	template <typename T> class Tube{
 		private:
 		const DLN<T>* crux;
 		unsigned long elements;
@@ -29,6 +29,7 @@ namespace Linear{
 			return point;
 		}
 		
+		//Positive hops move elements from the front to the back
 		inline void actualRoll(long hops){
 			DLN<T>* point=hop(hops);	//Get node to insert after
 			crux->prev->spliceNext();	//Remove crux
@@ -44,7 +45,7 @@ namespace Linear{
 		}
 		
 		T frontpop(){
-			if(!elements){//BangNote: The '!' is nessecary since otherwise there'd be a return statement positioning mess
+			if(elements==0){//EmptyNote: The '==0' is nessecary since otherwise there'd be a return statement mess
 				throw 1;
 			}
 			DLN<T>* temp=crux->spliceNext();
@@ -55,7 +56,7 @@ namespace Linear{
 		}
 		
 		T frontpeek(){
-			if(!elements){//See comment 'BangNote'
+			if(elements==0){//See comment 'EmptyNote'
 				throw 1;
 			}
 			return crux->next->datum;
@@ -68,7 +69,7 @@ namespace Linear{
 		}
 		
 		T backpop(){
-			if(!elements){//See comment 'BangNote'
+			if(elements==0){//See comment 'EmptyNote'
 				throw 1;
 			}
 			DLN<T>* temp=crux->prev->prev->spliceNext();
@@ -81,20 +82,20 @@ namespace Linear{
 		}
 		
 		T backpeep(){
-			if(!elements){//See comment 'BangNote'
+			if(elements==0){//See comment 'EmptyNote'
 				throw 1;
 			}
 			return crux->prev->datum;
 		}
 		
 		//This function serves as an API call, an optimization layer, and an error checking layer on top of 'actualRoll'
-		bool roll(long hops){
-			if(!elements){
-				return false;
+		void roll(long hops){
+			if(elements==0){
+				return;
 			}
 			hops=hops%elements;//Amount of logical hops (prevents caller from messing with everything)
 			if(!hops){//No change means no work to do!
-				return true;
+				return;
 			}
 			if((elements+1)/2<std::abs(hops)){//Optimize since rolling more than halfway is the same as rolling backward less than halfway
 				if(0<hops){
@@ -104,19 +105,19 @@ namespace Linear{
 				}
 			}
 			actualRoll(hops);//Using amount of actual hops
-			return true;
+			return;
 		}
 		
 		unsigned long getSize(){
 			return elements;
 		}
 		
-		Linear():crux(new DLN<T>()),elements(0){
+		Tube():crux(new DLN<T>()),elements(0){
 			crux->appendNext(crux);
 			return;
 		}
 		
-		~Linear(){
+		~Tube(){
 			for(;elements;elements--){
 				delete crux->spliceNext();
 			}
@@ -124,6 +125,55 @@ namespace Linear{
 			return;
 		}
 	};
-	//TODO: Implement this
-	template <typename K,typename V> class LL:public Storage,private Linear;
+	
+	template <typename K,typename V> class LL:public Storage<K,V>,private Tube<KVP<K,V>*>{
+		private:
+		void locate(K key){
+			KVP<K,V>* temp;
+			unsigned long i=0;
+			for(;i<getSize();i++){
+				backpush(temp=frontpop());
+				if(temp->compare(key)==0){
+					break;
+				}
+			}
+			return;
+		}
+		
+		public:
+		void insert(KVP<K,V>* toinsert){
+			frontpush(toinsert);
+			return;
+		}
+		
+		//A dumb find algorithm (for testing purposes)
+		KVP<K,V>* find(K key){
+			KVP<K,V>* retval=NULL;
+			locate(key);
+			KVP<K,V>* temp=backpop();
+			if(temp->compare(key)==0){
+				retval=temp;
+			}
+			frontpush(temp);
+			return retval;
+		}
+		
+		KVP<K,V>* remove(K key){
+			locate(key);
+			KVP<K,V>* retval=backpop();
+			if(retval->compare(key)!=0){
+				frontpush(retval);
+				retval=NULL;
+			}
+			return retval;
+		}
+		
+		unsigned long getSize(){
+			return elements;
+		}
+		
+		LL():Tube();
+		
+		~LL():~Tube();
+	};
 }

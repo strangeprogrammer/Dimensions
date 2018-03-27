@@ -21,10 +21,12 @@ Parser.cpp : grammar
 
 parsertest : parser_module.o testparser.o
 	@ #Silence make
+	$(call testDebug)
 	echo "Linking parser testing executable..."
 	$(LINK) ./parsertest ./parser_module.o ./testparser.o
 
 testparser.o : testparser.cpp
 	@ #Silence make
+	$(call testDebug)
 	echo "Compiling parser testing module..."
 	$(COMP) ./testparser.o ./testparser.cpp

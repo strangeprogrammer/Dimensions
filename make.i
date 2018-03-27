@@ -20,6 +20,14 @@ CPP		:= $(COMPILER) $(CFLAGS) $(DBGFLAGS)
 COMP		:= $(CPP) -c -o
 LINK		:= $(CPP) -o
 
+define testDebug
+	if [ "$(DEBUG)" != "true" ] #If the debugging flags haven't been set
+	then
+		echo "Target '$@' requires the \"DEBUG\" variable to be set to 'true'."
+		exit 1
+	fi
+endef
+
 #Set up some variable export rules
 export					#Export all variables by default
 export SHELL .SHELLFLAGS		#These require explicit exportion

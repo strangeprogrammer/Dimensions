@@ -1,0 +1,15 @@
+namespace ExecBlocks{
+	enum InstructionType:char;
+	
+	class Instruction:public Node::DLN<InstructionType>{
+		public:
+		Details::Basis* d;
+		
+		Instruction();
+		Instruction(InstructionType t);
+		Instruction(Instruction next,InstructionType t);
+		Instruction(Instruction prev,Instruction next,InstructionType t);
+		
+		~Instruction();
+	};
+}

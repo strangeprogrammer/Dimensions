@@ -27,10 +27,12 @@ Scanner.cpp : lexer
 
 scannertest : Scanner.cpp testscanner.o
 	@ #Silence make
+	$(call testDebug)
 	echo "Linking scanner testing executable..."
 	$(LINK) ./scannertest ./scanner_module.o ./testscanner.o
 
 testscanner.o : testscanner.cpp
 	@ #Silence make
+	$(call testDebug)
 	echo "Compiling scanner testing module..."
 	$(COMP) ./testscanner.o ./testscanner.cpp

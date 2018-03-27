@@ -1,0 +1,5 @@
+namespace Details{
+	class Basis{
+		virtual void dummy()=0;
+	};
+}

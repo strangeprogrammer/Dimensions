@@ -3,7 +3,6 @@ template <typename K,typename V> class KVP{
 	K key;
 	V value;
 	long compare(K key);
-	//KVP();//TODO: Make this throw an error
-	KVP(K key,V value):key(key),value(value);
-	//~KVP();//TODO: Implement this
+	KVP(K key,V value);
+	~KVP();//TODO: Implement this
 };

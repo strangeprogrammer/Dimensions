@@ -1,27 +1,29 @@
 #include "all.hpp"
 
 namespace Details{
-	class Details;
-	
-	template<int num> class axes:public Details{//TODO: Replace this with a 'Linear::Linear' structure
+	template <int num> class axes:public Basis{//TODO: Replace this with a 'Linear::Linear' structure
 		public:
 		axes<num-1> next;
 		int polarization:2=0;
-		const bool flag:1=1;
+		const bool flag:1;
+		axes():flag(1);
 	};
 	
-	template<> class axes<0>:public Details{//See previous
+	template <> class axes<0>:public Basis{//See previous
 		public:
-		const bool flag:1=0;
+		const bool flag:1;
 		int :0;
+		axes():flag(0);
 	};
 	
-	class number:public Details{
+	class number:public Basis{
 		public:
 		long number=0;
 	};
 	
-	class jump:public Details{
+	using namespace ExecBlocks;
+	
+	class jump:public Basis{
 		public:
 		Instruction* target;
 	};

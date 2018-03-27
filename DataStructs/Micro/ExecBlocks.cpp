@@ -1,7 +1,7 @@
 #include "all.hpp"
 
 namespace ExecBlocks{
-	enum InstructionType{
+	enum InstructionType:char{
 		MOV,	//Move
 		SETV,	//Set Velocity
 		ADD,	//Add
@@ -22,7 +22,7 @@ namespace ExecBlocks{
 	
 	class Instruction:public DLN<InstructionType>{
 		public:
-		Details* d;
+		Basis* d;
 		
 		Instruction():DLN();
 		Instruction(InstructionType t):DLN(t);
@@ -46,9 +46,9 @@ namespace ExecBlocks{
 	
 	#define INSTR_V(x,z) class x:public Instruction{\
 		public:\
-		x():Instruction(z);\
-		x(Instruction next):Instruction(next,z);\
-		x(Instruction prev,Instruction next):Instruction(prev,next,z);\
+		x():d(NULL),Instruction(z);\
+		x(Instruction next):d(NULL),Instruction(next,z);\
+		x(Instruction prev,Instruction next):d(NULL),Instruction(prev,next,z);\
 		\
 		~x():~Instruction();\
 	}

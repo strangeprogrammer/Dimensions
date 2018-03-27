@@ -1,8 +1,14 @@
+#include "all.hpp"
+
 namespace ExecBlocks{
-	enum InstructionType;
-	class Instruction:public Node::DLN<InstructionType>;
-	
-	#define PROTO(x) class x:public Instruction
+	#define PROTO(x) class x:public Instruction{\
+		public:\
+		x();\
+		x(Instruction next);\
+		x(Instruction prev,Instruction next);\
+		\
+		~x();\
+	}
 	
 	PROTO(mov);
 	PROTO(setv);
@@ -19,4 +25,5 @@ namespace ExecBlocks{
 	PROTO(halt);
 	
 	#undef PROTO
+	#undef PROTO_V
 }
