@@ -1,6 +1,7 @@
-SUBFOLDERS	:= flexcpp/ bisoncpp/
-#HEADERS	:= 
-#SOURCES	:= 
+SUBFOLDERS	:= flexcpp bisoncpp
+HEADERS		:= 
+SOURCES		:= 
+include make.i
 
 #Targets that shouldn't be treated as real files
 .PHONY : scanner parser scanner_src parser_src scannertest parsertest
@@ -9,31 +10,38 @@ SUBFOLDERS	:= flexcpp/ bisoncpp/
 
 scanner :
 	@ #Silence make
-	$(MAKE) ./flexcpp/ scanner_module.o
+	$(MAKE) -C ./flexcpp/ scanner_module.o
 
 parser :
 	@ #Silence make
-	$(MAKE) ./bisoncpp/ parser_module.o
+	$(MAKE) -C ./bisoncpp/ parser_module.o
 
 #Setup stuff
 
 scanner_src :
 	@ #Silence make
-	$(MAKE) ./flexcpp/ scanner.cpp
+	$(MAKE) -C ./flexcpp/ Scanner.cpp
 
 parser_src :
 	@ #Silence make
-	$(MAKE) ./bisoncpp/ parser.cpp
+	$(MAKE) -C ./bisoncpp/ Parser.cpp
 
 #For testing and debugging purposes
 
-scannertest parsertest :
-	@ #Silence make
-	#If the debugging flags haven't been set
-	if [ -z "$(DBGFLAGS)" ]
+define TEST
+	if [ -z "$(DBGFLAGS)" ] #If the debugging flags haven't been set
 	then
 		echo "This target requires the \"DEBUG\" variable to be set."
 		exit 1
 	else
-		$(MAKE) ./flexcpp/ $@
+		$(MAKE) -C ./$(1)/ $@
 	fi
+endef
+
+scannertest : 
+	@ #Silence make
+	$(call TEST,flexcpp)
+
+parsertest :
+	@ #Silence make
+	$(call TEST,bisoncpp)

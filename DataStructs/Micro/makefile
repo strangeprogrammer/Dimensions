@@ -1,3 +1,4 @@
 SUBFOLDERS	:= 
-#HEADERS	:= 
-#SOURCES	:= 
+HEADERS		:= 
+SOURCES		:= 
+include make.i

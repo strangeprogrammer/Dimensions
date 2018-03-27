@@ -1,20 +1,21 @@
 SUBFOLDERS	:= 
-#HEADERS	:= 
-#SOURCES	:= 
+HEADERS		:= 
+SOURCES		:= 
+include make.i
 
 #Project related
 
-scanner_module.o : scanner.cpp
+scanner_module.o : Scanner.cpp
 	@ #Silence make
 	echo "Compiling scanner module..."
-	$(COMP) ./scanner_module.o ./scanner.cpp
+	$(COMP) ./scanner_module.o ./Scanner.cpp
 
-scanner.cpp : lexer
+Scanner.cpp : lexer
 	@ #Silence make
-	[ -f ./Scannerbase.hpp -o -f ./Scanner.hpp -o -f ./Scanner.ihpp -o -f ./scanner.cpp ] || echo "Removing leftover scanner source files..."
-	rm ./Scannerbase.hpp ./Scanner.hpp ./Scanner.ihpp ./scanner.cpp &>/dev/null || true
+	[ -f ./Scannerbase.hpp -o -f ./Scanner.hpp -o -f ./Scanner.ihpp -o -f ./Scanner.cpp ] || echo "Removing leftover scanner source files..."
+	rm ./Scannerbase.hpp ./Scanner.hpp ./Scanner.ihpp ./Scanner.cpp &>/dev/null || true
 	echo "Creating scanner source files..."
-	flexc++ -b Scannerbase.hpp -c Scanner.hpp -i Scanner.ihpp -l scanner.cpp lexer
+	flexc++ -b Scannerbase.hpp -c Scanner.hpp -i Scanner.ihpp -l Scanner.cpp lexer
 	echo "Modifying scanner headers..."
 	echo '#ifdef DEBUG' >>./Scanner.ihpp
 	echo '	#include "parsingTest.hpp"' >>./Scanner.ihpp
@@ -24,7 +25,7 @@ scanner.cpp : lexer
 
 #For testing and debugging purposes
 
-scannertest : scanner.cpp testscanner.o
+scannertest : Scanner.cpp testscanner.o
 	@ #Silence make
 	echo "Linking scanner testing executable..."
 	$(LINK) ./scannertest ./scanner_module.o ./testscanner.o
