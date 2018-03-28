@@ -29,12 +29,12 @@ define testDebug
 endef
 
 #Set up some variable export rules
-export					#Export all variables by default
-export SHELL .SHELLFLAGS		#These require explicit exportion
-unexport SUBFOLDERS HEADERS SOURCES	#Don't export site-specific variables
+export						#Export all variables by default
+export SHELL .SHELLFLAGS			#These require explicit exportion
+unexport SUBFOLDERS HEADERS SOURCES OBJECTS	#Don't export site-specific variables
 
 #Targets that aren't real files
-.PHONY : listvars clean update
+.PHONY : listvars clean link compile update
 
 #Make the variable dump the default for safety purposes
 .DEFAULT : listvars
@@ -56,10 +56,23 @@ listvars :
 	echo "COMP        = $(COMP)"
 	echo "LINK        = $(LINK)"
 
+#TODO: Expand upon this next part later
+
+#link : up.o
+#up.o : $(OBJECTS)
+
+compile : $(OBJECTS)
+
+$(OBJECTS) : %.o : %.c
+	@ #Silence make
+	echo "Compiling sources..."
+	$(COMP) $@ $<
+
 #TODO: Change the "*.o" here to "$(OBJECTS)" or something else in the future
 clean :
 	@ #Silence make
-	rm -f *.o >/dev/null 2>&1 || return 0
+	echo "Removing all object files..."
+	rm -f $(OBJECTS) >/dev/null 2>&1 || return 0
 
 #For updating timestamps recursively throughout the project
 
