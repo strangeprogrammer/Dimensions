@@ -1,15 +1,37 @@
+#ifndef EXECBLOCKS_PROTO
+#define EXECBLOCKS_PROTO
+
 namespace ExecBlocks{
-	enum InstructionType:char;
+	using namespace Node;
 	
-	class Instruction:public Node::DLN<InstructionType>{
+	#define SUPER DLN<InstructionType>
+	#define SUPERCONST SUPER::DLN
+	#define SUPERDEST SUPER::~DLN
+	class Instruction:public SUPER{
 		public:
-		Details::Basis* d;
+		virtual void dummy()=0;
 		
-		Instruction();
-		Instruction(InstructionType t);
-		Instruction(Instruction next,InstructionType t);
-		Instruction(Instruction prev,Instruction next,InstructionType t);
+		virtual void appendSucc(Instruction* toappend){
+			SUPER::appendSucc(toappend);
+			return;
+		}
 		
-		~Instruction();
+		virtual Instruction* spliceSucc(){
+			return (Instruction*)(SUPER::spliceSucc());
+		}
+		
+		Instruction(Instruction* prev,Instruction* succ,InstructionType IT):	SUPERCONST(prev,succ,IT){}
+		Instruction(Instruction* succ,InstructionType IT):			SUPERCONST(succ,IT){}
+		Instruction(InstructionType IT):					SUPERCONST(IT){}
+		
+		virtual ~Instruction(){
+			this->datum=UNUSED;
+			return;
+		}
 	};
+	#undef SUPERDEST
+	#undef SUPERCONST
+	#undef SUPER
 }
+
+#endif //EXECBLOCKS_PROTO

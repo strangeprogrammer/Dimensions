@@ -2,10 +2,8 @@
 #./{,DataStructs/{,M{i,a}cro},Execution,Etc,Parsing/{,{flex,bison}cpp}}/makefile
 
 #Execute each target using only 1 subshell per target
-ifeq ($(MAKELEVEL),0)
 SHELL		:= /bin/bash
 .SHELLFLAGS	:= -e $(.SHELLFLAGS)
-endif
 .ONESHELL : $(SHELL)
 
 #For compiling and linking the program
@@ -28,26 +26,33 @@ define testDebug
 	fi
 endef
 
+#TODO: Implement compiled headers later
+GCHEADERS	:= $(patsubst %.hpp,%.gchpp,$(HEADERS))
+OBJECTS		:= $(patsubst %.cpp,%.o,$(SOURCES))
+
 #Set up some variable export rules
-export						#Export all variables by default
-export SHELL .SHELLFLAGS			#These require explicit exportion
-unexport SUBFOLDERS HEADERS SOURCES OBJECTS	#Don't export site-specific variables
+export							#Export all variables by default
+export SHELL .SHELLFLAGS				#These require explicit exportion
+unexport SUBFOLDERS HEADERS SOURCES GCHEADERS OBJECTS	#Don't export site-specific variables
 
 #Targets that aren't real files
 .PHONY : listvars clean link compile update
+
+#Make 'make' be silent
+.SILENT :
 
 #Make the variable dump the default for safety purposes
 .DEFAULT : listvars
 
 listvars :
-	@ #Silence make
-	#TODO: Add something so that a path can be given along which all variables are listed
 	echo "make invoked as \"$(MAKE)\""
 	echo "SHELL       = $(SHELL)"
 	echo ".SHELLFLAGS = $(.SHELLFLAGS)"
 	echo "SUBFOLDERS  = $(SUBFOLDERS)"
 	echo "HEADERS     = $(HEADERS)"
 	echo "SOURCES     = $(SOURCES)"
+	echo "GCHEADERS   = $(GCHEADERS)"
+	echo "OBJECTS     = $(OBJECTS)"
 	echo "DEBUG       = $(DEBUG)"
 	echo "DBGFLAGS    = $(DBGFLAGS)"
 	echo "COMPILER    = $(COMPILER)"
@@ -58,41 +63,37 @@ listvars :
 
 #TODO: Expand upon this next part later
 
-#link : up.o
-#up.o : $(OBJECTS)
+link : up.o
+
+up.o : $(OBJECTS)
+	echo "Linking $@..."
+	$(LINK) $@ $^
 
 compile : $(OBJECTS)
 
-$(OBJECTS) : %.o : %.c
-	@ #Silence make
-	echo "Compiling sources..."
-	$(COMP) $@ $<
+$(OBJECTS) : %.o : %.cpp
+	echo "Compiling $@..."
+	$(COMP) $@ $^
 
-#TODO: Change the "*.o" here to "$(OBJECTS)" or something else in the future
 clean :
-	@ #Silence make
-	echo "Removing all object files..."
-	rm -f $(OBJECTS) >/dev/null 2>&1 || return 0
+	echo "Removing all object files and compiled headers..."
+	rm -f $(OBJECTS) $(GCHEADERS) >/dev/null 2>&1 || return true
 
 #For updating timestamps recursively throughout the project
 
 .PHONY : $(SUBFOLDERS)
 
 update : $(SUBFOLDERS)
-	@ #Silence make
 	$(MAKE) up.hpp
 
 $(SUBFOLDERS) :
-	@ #Silence make
 	echo "Checking directory $$PWD/$@ for updates..."
 	$(MAKE) -C ./$@/ update
 
 up.hpp : $(addsuffix /up.hpp,$(SUBFOLDERS)) local.hpp
-	@ #Silence make
 	echo "Updating $$PWD/up.hpp..."
 	touch up.hpp
 
 local.hpp : $(SOURCES) $(HEADERS)
-	@ #Silence make
 	echo "Updating $$PWD/local.hpp..."
 	touch local.hpp

@@ -1,9 +1,10 @@
-#ifndef GLOBALS_HPP
-	#define GLOBALS_HPP
-	#include "Globals.hpp"
-#endif //GLOBALS_HPP
+#if LEVEL == 0
 
-#ifndef LIBRARIES_HPP
-	#define LIBRARIES_HPP
-	#include "Libraries.hpp"
-#endif //LIBRARIES_HPP
+#include "InstructionType.hpp"
+#include "Libraries.hpp"
+
+#elif LEVEL ==1
+
+#include "Globals.hpp"
+
+#endif //LEVEL

@@ -1,7 +1,6 @@
 SUBFOLDERS	:= 
 HEADERS		:= 
 SOURCES		:= 
-OBJECTS		:= 
 include make.i
 
 #Project related
@@ -20,9 +19,9 @@ Scanner.cpp : lexer
 	echo "Modifying scanner headers..."
 	echo '#ifdef DEBUG' >>./Scanner.ihpp
 	echo '	#include "parsingTest.hpp"' >>./Scanner.ihpp
-	echo '#else /*DEBUG*/' >>./Scanner.ihpp
+	echo '#else //DEBUG' >>./Scanner.ihpp
 	echo '	#include "all.hpp"' >>./Scanner.ihpp
-	echo '#endif /*DEBUG*/' >>./Scanner.ihpp
+	echo '#endif //DEBUG' >>./Scanner.ihpp
 
 #For testing and debugging purposes
 

@@ -1,29 +1,21 @@
-#ifndef DETAILS_PROTO
-	#define DETAILS_PROTO
-	#include "Details.proto"
-#endif //DETAILS_PROTO
+#if LEVEL == 0
 
-#ifndef NODE_HPP
-	#define NODE_HPP
-	#include "Node.hpp"
-#endif //NODE_HPP
+#include "KVP.hpp"
 
-#ifndef EXECBLOCKS_PROTO
-	#define EXECBLOCKS_PROTO
-	#include "ExecBlocks.proto"
-#endif //EXECBLOCKS_PROTO
+#elif LEVEL == 1
 
-#ifndef KVP_HPP
-	#define KVP_HPP
-	#include "KVP.hpp"
-#endif //KVP_HPP
+#include "Node.hpp"
 
-#ifndef DETAILS_HPP
-	#define DETAILS_HPP
-	#include "Details.hpp"
-#endif //DETAILS_HPP
+#elif LEVEL == 2
 
-#ifndef EXECBLOCKS_HPP
-	#define EXECBLOCKS_HPP
-	#include "ExecBlocks.hpp"
-#endif //EXECBLOCKS_HPP
+#include "ExecBlocks.proto"
+
+#elif LEVEL == 3
+
+#include "Details.hpp"
+
+#elif LEVEL == 4
+
+#include "ExecBlocks.hpp"
+
+#endif //LEVEL

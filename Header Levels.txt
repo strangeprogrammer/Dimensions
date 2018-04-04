@@ -1,0 +1,52 @@
+Format:-----------------------------------------------------------------------------------------------------------------------------
+
+LEVEL: LEVELNUM
+
+Pathname
+	DependencyPathname
+	...
+...
+
+Listing:----------------------------------------------------------------------------------------------------------------------------
+
+LEVEL: 0
+
+Etc/InstructionType.hpp
+Etc/Libraries.hpp
+DataStructs/Micro/KVP.hpp
+DataStructs/Storage.hpp
+
+LEVEL: 1
+DataStructs/Micro/Node.hpp
+	Etc/Libraries.hpp
+Etc/Globals.hpp
+	Etc/Libraries.hpp
+
+LEVEL: 2
+
+DataStructs/Macro/Linear.hpp
+	DataStructs/Micro/KVP.hpp
+	DataStructs/Micro/Node.hpp
+	Etc/Libraries.hpp
+DataStructs/Micro/ExecBlocks.proto
+	DataStructs/Micro/Node.hpp
+	Etc/InstructionType.hpp
+
+LEVEL: 3
+
+DataStructs/Micro/Details.hpp
+	DataStructs/Macro/Linear.hpp
+	DataStructs/Micro/ExecBlocks.proto
+	Etc/Libraries.hpp
+
+LEVEL: 4
+
+DataStructs/Micro/ExecBlocks.hpp
+	DataStructs/Micro/Details.hpp
+	DataStructs/Micro/ExecBlocks.proto
+	Etc/InstructionType.hpp
+
+LEVEL: UNKNOWN
+
+Parsing/ParseEnv.hpp
+Execution/RunEnv.hpp

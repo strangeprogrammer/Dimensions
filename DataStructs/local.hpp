@@ -1,4 +1,5 @@
-#ifndef STORAGE_HPP
-	#define STORAGE_HPP
-	#include "Storage.hpp"
-#endif //STORAGE_HPP
+#if LEVEL == 0
+
+#include "Storage.hpp"
+
+#endif //LEVEL

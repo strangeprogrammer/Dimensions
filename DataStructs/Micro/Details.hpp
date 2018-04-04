@@ -1,30 +1,75 @@
-#include "all.hpp"
+#ifndef DETAILS_HPP
+#define DETAILS_HPP
 
 namespace Details{
-	template <int num> class axes:public Basis{//TODO: Replace this with a 'Linear::Linear' structure
+	class DetailsBase{
 		public:
-		axes<num-1> next;
-		int polarization:2;
-		const bool flag:1;
-		axes();
+		virtual ~DetailsBase()=0;
 	};
 	
-	template <> class axes<0>:public Basis{//See previous
+	#define V long
+	#define K unsigned long
+	#define SUPER Linear::LL<K,V>
+	#define SUPERCONST SUPER::LL
+	class axes:public DetailsBase,public SUPER{
 		public:
-		const bool flag:1;
-		int :0;
-		axes();
+		//Deletes the old version or makes a new one if it doesn't exist
+		virtual void set(K key,V value){
+			remove(key);
+			insert(key,value);
+			return;
+		}
+		
+		//This'll work as long as numaxes!=ULONG_MAX
+		virtual void init(unsigned int numaxes){
+			for(numaxes++;numaxes;numaxes--){
+				insert(numaxes,0);
+			}
+			return;
+		}
+		
+		axes(unsigned int numaxes):SUPERCONST(){
+			init(numaxes);
+			return;
+		}
+		
+		axes():SUPERCONST(){}
+		
+		virtual ~axes()=default;
 	};
+	#undef SUPERDEST
+	#undef SUPERCONST
+	#undef SUPER
+	#undef K
+	#undef V
 	
-	class number:public Basis{
+	class number:public DetailsBase{
 		public:
-		long number;
+		long value;
+		
+		number(long value):value(value){}
+		number():value(0){}
+		
+		~number(){
+			value=0;
+			return;
+		}
 	};
 	
 	using namespace ExecBlocks;
 	
-	class jump:public Basis{
+	class jump:public DetailsBase{
 		public:
 		Instruction* target;
+		
+		jump(Instruction* target):target(target){}
+		jump():target(NULL){}
+		
+		~jump(){
+			target=NULL;
+			return;
+		}
 	};
 }
+
+#endif //DETAILS_HPP

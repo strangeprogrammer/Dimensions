@@ -1,4 +1,3 @@
-%scanner "all.hpp"
 %scanner-token-function d_scanner.lex()
 %token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII LBRKT RBRKT NOOP NUMBER LETTERS
 %start commands

@@ -1,4 +1,5 @@
-#ifndef LINEAR_HPP
-	#define LINEAR_HPP
-	#include "Linear.hpp"
-#endif //LINEAR_HPP
+#if LEVEL == 2
+
+#include "Linear.hpp"
+
+#endif //LEVEL
