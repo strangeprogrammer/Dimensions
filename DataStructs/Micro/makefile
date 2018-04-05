@@ -6,7 +6,8 @@ include make.i
 testprog : testmain.o local.hpp
 	@ #Silence make
 	$(call testDebug)
-	$(LINK) $@ $^
+	echo "Linking testprog..."
+	$(LINK) $@ $^ ../../Etc/Globals.cpp
 
 testmain.o : testmain.cpp
 	@ #Silence make

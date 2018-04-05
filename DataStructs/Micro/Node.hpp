@@ -1,6 +1,3 @@
-#ifndef NODE_HPP
-#define NODE_HPP
-
 //Please don't mix the node types here
 namespace Node{
 	//Singly-Linked Node
@@ -24,9 +21,11 @@ namespace Node{
 			return tosplice;
 		}
 		
-		SLN(SLN<T>* succ,T datum):	succ(succ),datum(datum){}
-		SLN(T datum):			succ(NULL),datum(datum){}
-		SLN():				succ(NULL),datum(NULL){}
+		SLN(SLN<T>* succ,T datum):succ(succ){
+			this->datum=datum;
+		}
+		SLN(T datum):SLN(NULL,datum){}
+		SLN():succ(NULL){}
 		
 		virtual ~SLN(){
 			succ=NULL;
@@ -78,5 +77,3 @@ namespace Node{
 	};
 	#undef SUPER
 }
-
-#endif //NODE_HPP

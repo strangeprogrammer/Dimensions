@@ -1,8 +1,4 @@
-#ifndef INSTRUCTIONTYPE_H
-#define INSTRUCTIONTYPE_H
-
 enum InstructionType:char{
-	UNUSED=0,	//Unused
 	MOV,		//Move
 	SETV,		//Set Velocity
 	ADD,		//Add
@@ -14,8 +10,6 @@ enum InstructionType:char{
 	LODV,		//Load Velocity
 	TZJ,		//Test and Jump on 0
 	JMP,		//Unconditional Jump
-	NOP,		//No Operation
+	NOOP,		//No Operation
 	HALT		//Halt
 };
-
-#endif //INSTRUCTIONTYPE_H

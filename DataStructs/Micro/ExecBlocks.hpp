@@ -1,111 +1,81 @@
-#ifndef EXECBLOCKS_HPP
-#define EXECBLOCKS_HPP
-
 //If you think this code is really squashed down into preprocessor, just wait until you see what I can REALLY do...
 namespace ExecBlocks{
 	using namespace Node;
 	using namespace Details;
 	
-	#define SUPER Instruction
+	#define DBASE DetailsBase
+	#define TBASE InstructionType
+	#define BASE Instruction
+	#define BASEA InstructionTempA
+	
+	#define SUPER BASE
 	#define SUPERCONST SUPER::SUPER
 	#define SUPERDEST SUPER::~SUPER
 	//Only use 'D' with objects that inherit from 'DetailsBase'
-	template <typename D,InstructionType IT> class InstructionTempA:public SUPER{
-		protected:
-		virtual void initd(){
-			d=new D();
-			return;
-		}
-		
+	template <TBASE IT> class BASEA:public SUPER{
 		public:
 		DetailsBase* d;
 		
 		virtual void dummy()=0;
 		
-		InstructionTempA(Instruction* prev,Instruction* succ):	SUPERCONST(prev,succ,IT){initd();}
-		InstructionTempA(Instruction* succ):			SUPERCONST(succ,IT){initd();}
-		InstructionTempA():					SUPERCONST(IT){initd();}
+		BASEA(BASE* prev,BASE* succ):	SUPERCONST(prev,succ,IT){}
+		BASEA(BASE* succ):		SUPERCONST(succ,IT){}
+		BASEA():			SUPERCONST(IT){}
 		
-		virtual ~InstructionTempA(){
-			delete d;
-			return;
-		}
+		virtual ~BASEA(){}
 	};
 	#undef SUPERDEST
 	#undef SUPERCONST
 	#undef SUPER
 	
-	#define SUPER InstructionTempA<DetailsBase,IT>
-	#define SUPERCONST SUPER::InstructionTempA
-	template <InstructionType IT> class InstructionTempB:public InstructionTempA<DetailsBase,IT>{
-		protected:
-		virtual void initd(){
-			return;
-		}
-		
-		public:
-		virtual void dummy()=0;
-		
-		InstructionTempB(Instruction* prev,Instruction* succ):SUPERCONST(prev,succ){}
-		InstructionTempB(Instruction* succ):SUPERCONST(succ){}
-		InstructionTempB():SUPERCONST(){}
-		
-		virtual ~InstructionTempB(){}
-	};
-	#undef SUPERCONST
-	#undef SUPER
-	
 	using namespace Globals;
 	
-	#define BASE Instruction
-	#define BASEA InstructionTempA
-	#define BASEB InstructionTempB
+	//Original code from here on fully mashed into preprocessor directives :)
+	#define CONSTTEMP(name,cargs,type,dtype,dargs)\
+		public:\
+		name(cargs):SUPER(type)::BASEA(){this->d=new dtype(dargs);}\
+		~name(){delete this->d;}
 	
-	#define SUPER(T) BASEA<axes,T>
+	#define AXESCONF(name,type) CONSTTEMP(name,,type,axes,dimensions)
+	#define NUMBERCONF(name,type) CONSTTEMP(name,long value,type,number,value)
+	#define JUMPCONF(name,type) CONSTTEMP(name,BASE* target,type,jump,target)
 	
-	#define AXESCONFIG(classname,T)\
-		public:classname():SUPER(T)::BASEA(){((axes*)(this->d))->init(dimensions);}
+	#define CLASSIFY(name,type,config) class name: public SUPER(type){config}
+	#define CLASSCONF(name,type,config) CLASSIFY(name,type,config(name,type))
 	
-	class mov:	public SUPER(MOV)	{AXESCONFIG(mov,MOV)};
-	class setv:	public SUPER(SETV)	{AXESCONFIG(setv,SETV)};
-	class strv:	public SUPER(STRV)	{AXESCONFIG(strv,STRV)};
+	#define SUPER(type) BASEA<type>
 	
-	#undef AXESCONFIG
+	CLASSCONF(mov,MOV,AXESCONF);
+	CLASSCONF(setv,SETV,AXESCONF);
+	CLASSCONF(strv,STRV,AXESCONF);
 	
-	#define NUMBERCONFIG(classname,T)\
-		public:classname(long num):SUPER(T)::BASEA(){((number*)(this->d))->value=num;}
+	CLASSCONF(add,ADD,NUMBERCONF);
+	CLASSCONF(sub,SUB,NUMBERCONF);
 	
-	#undef SUPER
-	#define SUPER(T) BASEA<number,T>
-	class add:	public SUPER(ADD)	{NUMBERCONFIG(add,ADD)};
-	class sub:	public SUPER(SUB)	{NUMBERCONFIG(sub,SUB)};
+	CLASSIFY(getc,GETC,);
+	CLASSIFY(putn,PUTN,);
+	CLASSIFY(putc,PUTC,);
+	CLASSIFY(lodv,LODV,);
+	CLASSIFY(nop,NOOP,);
+	CLASSIFY(halt,HALT,);
 	
-	#undef NUMBERCONFIG
-	
-	#undef SUPER
-	#define SUPER(T) BASEB<T>
-	class getc:	public SUPER(GETC)	{};
-	class putn:	public SUPER(PUTN)	{};
-	class putc:	public SUPER(PUTC)	{};
-	class lodv:	public SUPER(LODV)	{};
-	class nop:	public SUPER(NOP)	{};
-	class halt:	public SUPER(HALT)	{};
-	
-	#define JUMPCONFIG(classname,T)\
-		public:classname(Instruction* target):SUPER(T)::BASEA(){((jump*)(this->d))->target=target;}
+	CLASSCONF(tzj,TZJ,JUMPCONF);
+	CLASSCONF(jmp,JMP,JUMPCONF);
 	
 	#undef SUPER
-	#define SUPER(T) BASEA<jump,T>
-	class tzj:	public SUPER(TZJ)	{JUMPCONFIG(tzj,TZJ)};
-	class jmp:	public SUPER(JMP)	{JUMPCONFIG(jmp,JMP)};
 	
-	#undef JUMPCONFIG
+	#undef CLASSCONF
+	#undef CLASSIFY
 	
-	#undef SUPER
+	#undef JUMPCONF
+	#undef NUMBERCONF
+	#undef AXESCONF
+	
+	#undef CONSTTEMP
 	
 	#undef BASEB
 	#undef BASEA
 	#undef BASE
+	#undef TBASE
+	#undef DBASE
 }
-
-#endif //EXECBLOCKS_HPP

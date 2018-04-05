@@ -1,6 +1,3 @@
-#ifndef DETAILS_HPP
-#define DETAILS_HPP
-
 namespace Details{
 	class DetailsBase{
 		public:
@@ -14,14 +11,14 @@ namespace Details{
 	class axes:public DetailsBase,public SUPER{
 		public:
 		//Deletes the old version or makes a new one if it doesn't exist
-		virtual void set(K key,V value){
+		void set(K key,V value){
 			remove(key);
 			insert(key,value);
 			return;
 		}
 		
 		//This'll work as long as numaxes!=ULONG_MAX
-		virtual void init(unsigned int numaxes){
+		void init(unsigned int numaxes){
 			for(numaxes++;numaxes;numaxes--){
 				insert(numaxes,0);
 			}
@@ -35,7 +32,7 @@ namespace Details{
 		
 		axes():SUPERCONST(){}
 		
-		virtual ~axes()=default;
+		~axes(){}
 	};
 	#undef SUPERDEST
 	#undef SUPERCONST
@@ -71,5 +68,3 @@ namespace Details{
 		}
 	};
 }
-
-#endif //DETAILS_HPP

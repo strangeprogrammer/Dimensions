@@ -3,15 +3,11 @@ HEADERS		:=
 SOURCES		:= 
 include make.i
 
-#Project related
-
 scanner_module.o : Scanner.cpp
-	@ #Silence make
 	echo "Compiling scanner module..."
 	$(COMP) ./scanner_module.o ./Scanner.cpp
 
 Scanner.cpp : lexer
-	@ #Silence make
 	[ -f ./Scannerbase.hpp -o -f ./Scanner.hpp -o -f ./Scanner.ihpp -o -f ./Scanner.cpp ] || echo "Removing leftover scanner source files..."
 	rm ./Scannerbase.hpp ./Scanner.hpp ./Scanner.ihpp ./Scanner.cpp &>/dev/null || true
 	echo "Creating scanner source files..."
@@ -25,14 +21,12 @@ Scanner.cpp : lexer
 
 #For testing and debugging purposes
 
-scannertest : Scanner.cpp testscanner.o
-	@ #Silence make
+scannertest : scanner_module.o testscanner.o
 	$(call testDebug)
 	echo "Linking scanner testing executable..."
 	$(LINK) ./scannertest ./scanner_module.o ./testscanner.o
 
 testscanner.o : testscanner.cpp
-	@ #Silence make
 	$(call testDebug)
 	echo "Compiling scanner testing module..."
 	$(COMP) ./testscanner.o ./testscanner.cpp

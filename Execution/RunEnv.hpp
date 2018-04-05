@@ -1,6 +1,3 @@
-#ifndef RUNENV_HPP
-#define RUNENV_HPP
-
 class RunEnv {
 	public:
 	long execute(long* retval);
@@ -9,5 +6,3 @@ class RunEnv {
 	
 	//Destructor zeroes all variables
 };
-
-#endif //RUNENV_HPP

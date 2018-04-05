@@ -6,12 +6,10 @@ include make.i
 #Project related
 
 parser_module.o : Parser.cpp
-	@ #Silence make
 	echo "Compiling parser module..."
 	$(COMP) ./parser_module.o ./Parser.cpp
 
 Parser.cpp : grammar
-	@ #Silence make
 	[ -f ./Parserbase.hpp -o -f ./Parser.hpp -o -f ./Parser.ihpp -o -f ./Parser.cpp ] || echo "Removing leftover parser source files..."
 	rm ./Parserbase.hpp ./Parser.hpp ./Parser.ihpp ./Parser.cpp &>/dev/null || true
 	echo "Creating parser source files..."
@@ -19,14 +17,12 @@ Parser.cpp : grammar
 
 #For testing and debugging purposes
 
-parsertest : parser_module.o testparser.o
-	@ #Silence make
+parsertest : parser_module.o testparser.o ../flexcpp/scanner_module.o
 	$(call testDebug)
 	echo "Linking parser testing executable..."
-	$(LINK) ./parsertest ./parser_module.o ./testparser.o
+	$(LINK) ./parsertest ./parser_module.o ./testparser.o ../flexcpp/scanner_module.o
 
 testparser.o : testparser.cpp
-	@ #Silence make
 	$(call testDebug)
 	echo "Compiling parser testing module..."
 	$(COMP) ./testparser.o ./testparser.cpp

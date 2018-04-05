@@ -1,6 +1,3 @@
-#ifndef LINEAR_HPP
-#define LINEAR_HPP
-
 namespace Linear{
 	using namespace Node;
 	/* This is basically an amalgamation of a queue, stack, and ring buffer
@@ -186,6 +183,10 @@ namespace Linear{
 			return;
 		}
 		
+		virtual unsigned long getSize(){
+			return SUPER::getSize();
+		}
+		
 		LL():SUPER::Tube(){}
 		
 		virtual ~LL(){
@@ -195,5 +196,3 @@ namespace Linear{
 	#undef SUPER
 	#undef PAIR
 }
-
-#endif //LINEAR_HPP

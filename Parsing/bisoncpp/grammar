@@ -1,4 +1,9 @@
-%scanner-token-function d_scanner.lex()
+//Test string: (abcdefghijklmnopqrstuvwxyz>abcdefghijklmnopqrstuvwxyz<)(&#~@)(0987654321+)(0-)(%)(£)($)([)(1-)(])(/)
+
+//For debugging purposes only
+%print-tokens
+
+%scanner "../flexcpp/Scanner.hpp"
 %token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII LBRKT RBRKT NOOP NUMBER LETTERS
 %start commands
 
@@ -10,8 +15,11 @@ parser.parse();
 
 %%
 commands
-: command /*{
-}*/
+: /*empty*/ {
+	#ifdef DEBUG
+	std::cout << "TERMINATOR" << std::endl;
+	#endif //DEBUG
+}
 | commands command /*{
 	env->progend->appendNext($2);
 	env->progend=env->progend->next;
@@ -25,23 +33,50 @@ command
 : LPAREN action RPAREN /*{
 	$$=$2;
 }*/
+| while /*{
+}*/ commands endwhile /*{
+}*/
+;
+
+while
+: LPAREN LBRKT RPAREN /*{
+	tzj* temp=new tzj();
+	env->jstack->frontpush(temp);
+	$$=temp;
+}*/
+;
+
+endwhile
+: LPAREN RBRKT RPAREN /*{
+	jmp* temp=new jmp();
+	tzj* ret=env->jstack->frontpop();
+	temp->d->target=ret;
+	env->resolve->frontpush(ret);
+	$$=temp;
+}*/
 ;
 
 action
 : motion		//{$$=$1;}
 | literal_velocity	//{$$=$1;}
-| arithmetic		//{$$=$1;}
 | store_velocity	//{$$=$1;}
+| arithmetic		//{$$=$1;}
 | input			//{$$=$1;}
 | output		//{$$=$1;}
-| flowcontrol		//{$$=$1;}
 | noop			//{$$=$1;}
 ;
 
+letters
+: LETTERS /*{
+}*/
+| /*empty*/ /*{
+}*/
+;
+
 motion
-: LETTERS MFORE /*{
+: letters MFORE /*{
 	//Do something
-}*/ LETTERS MBACK /*{
+}*/ letters MBACK /*{
 	//Do something else
 }*/
 ;
@@ -59,11 +94,11 @@ store_velocity
 ;
 
 velocity
-: LETTERS /*{
+: letters /*{
 	//Do something
-}*/ VFORE LETTERS /*{
+}*/ VFORE letters /*{
 	//Do something else
-}*/ VBACK LETTERS /*{
+}*/ VBACK letters /*{
 	//Do something else else
 }*/ VZERO
 ;
@@ -105,33 +140,6 @@ output_number
 output_ascii
 : OUTASCII /*{
 	//Do something
-}*/
-;
-
-flowcontrol
-: while /*{
-	$$=$1;
-}*/
-| endwhile /*{
-	$$=$1;
-}*/
-;
-
-while
-: LBRKT /*{
-	tzj* temp=new tzj();
-	env->jstack->frontpush(temp);
-	$$=temp;
-}*/
-;
-
-endwhile
-: RBRKT /*{
-	jmp* temp=new jmp();
-	tzj* ret=env->jstack->frontpop();
-	temp->d->target=ret;
-	env->resolve->frontpush(ret);
-	$$=temp;
 }*/
 ;
 

@@ -1,3 +1,8 @@
+Notes:------------------------------------------------------------------------------------------------------------------------------
+
+Only files that need to be included along the header file include chain are listed.
+This is because any other files handle their own dependencies.
+
 Format:-----------------------------------------------------------------------------------------------------------------------------
 
 LEVEL: LEVELNUM
@@ -15,12 +20,16 @@ Etc/InstructionType.hpp
 Etc/Libraries.hpp
 DataStructs/Micro/KVP.hpp
 DataStructs/Storage.hpp
+Parsing/flexcpp/Scanner.hpp
 
 LEVEL: 1
+
 DataStructs/Micro/Node.hpp
 	Etc/Libraries.hpp
 Etc/Globals.hpp
 	Etc/Libraries.hpp
+Parsing/bisoncpp/Parser.hpp
+	Parsing/flexcpp/Scanner.hpp
 
 LEVEL: 2
 
@@ -46,7 +55,12 @@ DataStructs/Micro/ExecBlocks.hpp
 	DataStructs/Micro/ExecBlocks.proto
 	Etc/InstructionType.hpp
 
-LEVEL: UNKNOWN
+LEVEL: 5
 
 Parsing/ParseEnv.hpp
+	//TODO: List dependencies here
+
+LEVEL: 6
+
 Execution/RunEnv.hpp
+	//TODO: List dependencies here

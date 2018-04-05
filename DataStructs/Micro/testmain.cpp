@@ -25,14 +25,13 @@ int main(){
 	
 	cout << "hi.key ";
 	cin >> hi.key;
-	cout << endl << "hi.value ";
+	cout << "hi.value ";
 	cin >> hi.value;
-	cout << endl << "bye.key ";
+	cout << "bye.key ";
 	cin >> bye.key;
-	cout << endl << "bye.value ";
+	cout << "bye.value ";
 	cin >> bye.value;
-	cout << endl;
 	
-	cout << hi.compareTo(&bye) << endl;
+	cout << hi.compareTo(&bye) << endl << hi.key << " " << hi.value << endl << bye.key << " " << bye.value;
 	return 0;
 }
