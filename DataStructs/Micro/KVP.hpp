@@ -7,11 +7,15 @@ template <typename K,typename V> class KVP{
 		return key-(against->key);
 	}
 	
-	long unlock(K key){
-		return (this->key)-key;
+	bool unlock(K key){
+		return !((this->key)-key);
 	}
 	
-	KVP(K key,V value):key(key),value(value){}
+	KVP(K key,V value){
+		this->key=key;
+		this->value=value;
+	}
+	
 	KVP(){}
 	
 	~KVP(){}

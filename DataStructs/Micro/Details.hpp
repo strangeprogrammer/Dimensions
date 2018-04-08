@@ -1,14 +1,11 @@
 namespace Details{
-	class DetailsBase{
-		public:
-		virtual ~DetailsBase()=0;
-	};
+	class DetailsBase:ABSTRACT{};
 	
 	#define V long
 	#define K unsigned long
-	#define SUPER Linear::LL<K,V>
-	#define SUPERCONST SUPER::LL
-	class axes:public DetailsBase,public SUPER{
+	#define SUPER List<K,V>
+	#define SUPERC SUPER::List
+	class Axes:CONCRETE,public DetailsBase,public SUPER{
 		public:
 		//Deletes the old version or makes a new one if it doesn't exist
 		void set(K key,V value){
@@ -17,37 +14,35 @@ namespace Details{
 			return;
 		}
 		
-		//This'll work as long as numaxes!=ULONG_MAX
 		void init(unsigned int numaxes){
-			for(numaxes++;numaxes;numaxes--){
-				insert(numaxes,0);
+			for(unsigned long i=0;i<numaxes;i++){
+				set(i,0);
 			}
 			return;
 		}
 		
-		axes(unsigned int numaxes):SUPERCONST(){
+		Axes(unsigned int numaxes):SUPERC(){
 			init(numaxes);
 			return;
 		}
 		
-		axes():SUPERCONST(){}
+		Axes():Axes(52){}
 		
-		~axes(){}
+		~Axes(){}
 	};
-	#undef SUPERDEST
-	#undef SUPERCONST
+	#undef SUPERC
 	#undef SUPER
 	#undef K
 	#undef V
 	
-	class number:public DetailsBase{
+	class Number:CONCRETE,public DetailsBase{
 		public:
 		long value;
 		
-		number(long value):value(value){}
-		number():value(0){}
+		Number(long value):value(value){}
+		Number():value(0){}
 		
-		~number(){
+		~Number(){
 			value=0;
 			return;
 		}
@@ -55,14 +50,14 @@ namespace Details{
 	
 	using namespace ExecBlocks;
 	
-	class jump:public DetailsBase{
+	class Jump:CONCRETE,public DetailsBase{
 		public:
 		Instruction* target;
 		
-		jump(Instruction* target):target(target){}
-		jump():target(NULL){}
+		Jump(Instruction* target):target(target){}
+		Jump():target(NULL){}
 		
-		~jump(){
+		~Jump(){
 			target=NULL;
 			return;
 		}

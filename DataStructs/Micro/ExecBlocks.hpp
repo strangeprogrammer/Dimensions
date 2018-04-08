@@ -3,69 +3,67 @@ namespace ExecBlocks{
 	using namespace Node;
 	using namespace Details;
 	
-	#define DBASE DetailsBase
-	#define TBASE InstructionType
 	#define BASE Instruction
-	#define BASEA InstructionTempA
+	#define BASET InstructionTemp
 	
-	#define SUPER BASE
-	#define SUPERCONST SUPER::SUPER
-	#define SUPERDEST SUPER::~SUPER
-	//Only use 'D' with objects that inherit from 'DetailsBase'
-	template <TBASE IT> class BASEA:public SUPER{
+	#define SUPERC BASE::BASE
+	#define SUPERDEST BASE::~BASE
+	template <InstructionType IT,typename D> class BASET:ABSTRACT,public BASE{
 		public:
-		DetailsBase* d;
+		D* d;
 		
-		virtual void dummy()=0;
+		BASET(BASE* prev,BASE* succ):	SUPERC(prev,succ,IT){}
+		BASET(BASE* succ):		SUPERC(succ,IT){}
+		BASET():			SUPERC(IT){}
 		
-		BASEA(BASE* prev,BASE* succ):	SUPERCONST(prev,succ,IT){}
-		BASEA(BASE* succ):		SUPERCONST(succ,IT){}
-		BASEA():			SUPERCONST(IT){}
-		
-		virtual ~BASEA(){}
+		virtual ~BASET(){}
 	};
 	#undef SUPERDEST
-	#undef SUPERCONST
-	#undef SUPER
+	#undef SUPERC
 	
 	using namespace Globals;
 	
 	//Original code from here on fully mashed into preprocessor directives :)
 	#define CONSTTEMP(name,cargs,type,dtype,dargs)\
 		public:\
-		name(cargs):SUPER(type)::BASEA(){this->d=new dtype(dargs);}\
+		name(cargs):BASET<type,dtype>::BASET(){this->d=new dtype(dargs);}\
 		~name(){delete this->d;}
 	
-	#define AXESCONF(name,type) CONSTTEMP(name,,type,axes,dimensions)
-	#define NUMBERCONF(name,type) CONSTTEMP(name,long value,type,number,value)
-	#define JUMPCONF(name,type) CONSTTEMP(name,BASE* target,type,jump,target)
+	//Maybe change this next line so that the default number of dimensions can be changed
+	#define AXESCONF(name,type) CONSTTEMP(name,,type,Axes,dimensions)
+	#define NUMBERCONF(name,type) CONSTTEMP(name,long value,type,Number,value)
+	#define JUMPCONF(name,type) CONSTTEMP(name,BASE* target,type,Jump,target)
 	
-	#define CLASSIFY(name,type,config) class name: public SUPER(type){config}
-	#define CLASSCONF(name,type,config) CLASSIFY(name,type,config(name,type))
+	#define VANILLA(name,type) class name:CONCRETE,public BASE{}
+	#define CHOCOLATE(name,type,dtype,config) class name:CONCRETE,public BASET<type,dtype>{config(name,type)}
 	
-	#define SUPER(type) BASEA<type>
+	#define AXOID(name,type) CHOCOLATE(name,type,Axes,AXESCONF)
+	#define NUMOID(name,type) CHOCOLATE(name,type,Number,NUMBERCONF)
+	#define JUMPOID(name,type) CHOCOLATE(name,type,Jump,JUMPCONF)
 	
-	CLASSCONF(mov,MOV,AXESCONF);
-	CLASSCONF(setv,SETV,AXESCONF);
-	CLASSCONF(strv,STRV,AXESCONF);
+	AXOID(mov,MOV);
+	AXOID(setv,SETV);
+	AXOID(strv,STRV);
 	
-	CLASSCONF(add,ADD,NUMBERCONF);
-	CLASSCONF(sub,SUB,NUMBERCONF);
+	NUMOID(add,ADD);
+	NUMOID(sub,SUB);
 	
-	CLASSIFY(getc,GETC,);
-	CLASSIFY(putn,PUTN,);
-	CLASSIFY(putc,PUTC,);
-	CLASSIFY(lodv,LODV,);
-	CLASSIFY(nop,NOOP,);
-	CLASSIFY(halt,HALT,);
+	VANILLA(getc,GETC);
+	VANILLA(putn,PUTN);
+	VANILLA(putc,PUTC);
+	VANILLA(lodv,LODV);
+	VANILLA(noop,NOOP);
+	VANILLA(halt,HALT);
 	
-	CLASSCONF(tzj,TZJ,JUMPCONF);
-	CLASSCONF(jmp,JMP,JUMPCONF);
+	JUMPOID(tzj,TZJ);
+	JUMPOID(jmp,JMP);
 	
-	#undef SUPER
+	#undef AXOID
+	#undef NUMOID
+	#undef JUMPOID
 	
 	#undef CLASSCONF
-	#undef CLASSIFY
+	#undef VANILLA
 	
 	#undef JUMPCONF
 	#undef NUMBERCONF
@@ -73,9 +71,6 @@ namespace ExecBlocks{
 	
 	#undef CONSTTEMP
 	
-	#undef BASEB
-	#undef BASEA
+	#undef BASET
 	#undef BASE
-	#undef TBASE
-	#undef DBASE
 }

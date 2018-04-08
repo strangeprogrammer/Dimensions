@@ -1,16 +1,33 @@
 //Please don't mix the node types here
 namespace Node{
-	//Singly-Linked Node
-	template <typename T> class SLN{
+	template <typename T,typename N> class SLNBase:ABSTRACT{
 		public:
-		SLN<T>* succ;
+		N* succ;
 		T datum;
 		
-		virtual void appendSucc(SLN<T>* toappend){
-			DIENULLVOID(toappend);
+		SLNBase(N* succ,T datum):	succ(succ){
+			this->datum=datum;
+		}
+		SLNBase(T datum):		SLNBase(NULL,datum){}
+		SLNBase():			succ(NULL){}
+		
+		virtual ~SLNBase(){succ=NULL;}
+	};
+	
+	//Singly-Linked Node
+	//'N' should be a subclass of 'SLN'
+	#define SUPER SLNBase<T,SLN<T>>
+	#define SUPERC SUPER::SLNBase
+	template <typename T> class SLN:CONCRETE,public SUPER{
+		public:
+		using SUPER::succ;
+		using SUPER::datum;
+		
+		virtual SLN<T>* appendSucc(SLN<T>* toappend){
+			DIENULL(toappend);
 			toappend->succ=succ;
 			succ=toappend;
-			return;
+			return toappend;
 		}
 		
 		virtual SLN<T>* spliceSucc(){
@@ -21,59 +38,69 @@ namespace Node{
 			return tosplice;
 		}
 		
-		SLN(SLN<T>* succ,T datum):succ(succ){
-			this->datum=datum;
-		}
-		SLN(T datum):SLN(NULL,datum){}
-		SLN():succ(NULL){}
+		SLN(SLN<T>* succ,T datum):	SUPERC(succ,datum){}
+		SLN(T datum):			SUPERC(datum){}
+		SLN():				SUPERC(){}
 		
-		virtual ~SLN(){
-			succ=NULL;
-			return;
-		}
+		virtual ~SLN(){}
 	};
+	#undef SUPERC
+	#undef SUPER
+	
+	#define SUPER SLNBase<T,N>
+	#define SUPERC SUPER::SLNBase
+	template <typename T,typename N> class DLNBase:ABSTRACT,public SUPER{
+		public:
+		N* prev;
+		
+		DLNBase(N* prev,N* succ,T datum):	SUPERC(succ,datum),prev(prev){}
+		DLNBase(N* succ,T datum):		DLNBase(NULL,succ,datum){}
+		DLNBase(T datum):			DLNBase(NULL,NULL,datum){}
+		DLNBase():				SUPERC(),prev(NULL){}
+		
+		virtual ~DLNBase(){prev=NULL;}
+	};
+	#undef SUPERC
+	#undef SUPER
 	
 	//Doubly-Linked Node
-	#define SUPER SLN<T>
-	template <typename T> class DLN:public SUPER{
-		#define SUPERCONST SUPER::SLN
-		#define SUPERDEST SUPER::~SLN
+	#define SUPER DLNBase<T,DLN<T>>
+	#define SUPERC SUPER::DLNBase
+	template <typename T> class DLN:CONCRETE,public SUPER{
 		public:
 		using SUPER::succ;
 		using SUPER::datum;
-		DLN<T>* prev;
+		using SUPER::prev;
 		
-		virtual void appendSucc(DLN<T>* toappend){
-			DIENULLVOID(toappend);
-			SUPER::appendSucc(toappend);
+		virtual DLN<T>* appendSucc(DLN<T>* toappend){
+			DIENULL(toappend);
+			toappend->succ=succ;
+			succ=toappend;
 			toappend->prev=this;
 			if(toappend->succ){
-				((DLN<T>*)(toappend->succ))->prev=toappend;
+				toappend->succ->prev=toappend;
 			}
-			return;
+			return toappend;
 		}
 		
 		virtual DLN<T>* spliceSucc(){
-			DLN<T>* tosplice=(DLN<T>*)(succ);
+			DLN<T>* tosplice=succ;
 			if(tosplice){
 				succ=tosplice->succ;
 				if(tosplice->succ){
-					((DLN<T>*)(tosplice->succ))->prev=this;
+					tosplice->succ->prev=this;
 				}
 			}
 			return tosplice;
 		}
 		
-		DLN(DLN<T>* prev,DLN<T>* succ,T datum):	SUPERCONST(succ,datum),prev(prev){}
-		DLN(DLN<T>* succ,T datum):		SUPERCONST(succ,datum),prev(NULL){}
-		DLN(T datum):				SUPERCONST(datum),prev(NULL){}
-		DLN():					SUPERCONST(),prev(NULL){}
+		DLN(DLN<T>* prev,DLN<T>* succ,T datum):	SUPERC(prev,succ,datum){}
+		DLN(DLN<T>* succ,T datum):		SUPERC(succ,datum){}
+		DLN(T datum):				SUPERC(datum){}
+		DLN():					SUPERC(){}
 		
-		virtual ~DLN(){
-			prev=NULL;
-		}
-		#undef SUPERDEST
-		#undef SUPERCONST
+		virtual ~DLN(){}
 	};
+	#undef SUPERC
 	#undef SUPER
 }

@@ -4,15 +4,12 @@
 namespace ExecBlocks{
 	using namespace Node;
 	
-	#define TBASE InstructionType
 	#define BASE Instruction
 	
-	#define SUPER DLN<TBASE>
-	#define SUPERCONST SUPER::DLN
-	class BASE:public SUPER{
+	#define SUPER DLN<InstructionType>
+	#define SUPERC SUPER::DLN
+	class BASE:ABSTRACT,public SUPER{
 		public:
-		virtual void dummy()=0;
-		
 		virtual void appendSucc(BASE* toappend){
 			SUPER::appendSucc(toappend);
 			return;
@@ -22,17 +19,16 @@ namespace ExecBlocks{
 			return (BASE*)(SUPER::spliceSucc());
 		}
 		
-		BASE(BASE* prev,BASE* succ,TBASE IT):	SUPERCONST(prev,succ,IT){}
-		BASE(BASE* succ,TBASE IT):		SUPERCONST(succ,IT){}
-		BASE(TBASE IT):				SUPERCONST(IT){}
+		BASE(BASE* prev,BASE* succ,InstructionType IT):	SUPERC(prev,succ,IT){}
+		BASE(BASE* succ,InstructionType IT):		SUPERC(succ,IT){}
+		BASE(InstructionType IT):			SUPERC(IT){}
 		
 		virtual ~BASE(){}
 	};
-	#undef SUPERCONST
+	#undef SUPERC
 	#undef SUPER
 	
 	#undef BASE
-	#undef TBASE
 }
 
 #endif //EXECBLOCKS_PROTO

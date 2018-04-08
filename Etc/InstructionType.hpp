@@ -8,8 +8,8 @@ enum InstructionType:char{
 	PUTN,		//Put Number
 	PUTC,		//Put Character
 	LODV,		//Load Velocity
-	TZJ,		//Test and Jump on 0
-	JMP,		//Unconditional Jump
+	TZJ,		//Test for 0 and Jump
+	JMP,		//Jump Unconditionally
 	NOOP,		//No Operation
 	HALT		//Halt
 };

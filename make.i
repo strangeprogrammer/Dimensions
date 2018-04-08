@@ -19,7 +19,7 @@ COMP		:= $(CPP) -c -o
 LINK		:= $(CPP) -o
 
 define testDebug
-	if [ "$(DEBUG)" != "true" ] #If the debugging flags haven't been set
+	if [ "$(DEBUG)" != "true" ]
 	then
 		echo "Target '$@' requires the \"DEBUG\" variable to be set to 'true'."
 		exit 1

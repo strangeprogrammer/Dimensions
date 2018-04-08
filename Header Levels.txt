@@ -16,15 +16,17 @@ Listing:------------------------------------------------------------------------
 
 LEVEL: 0
 
+DataStructs/Storage.hpp
+DataStructs/Micro/KVP.hpp
+Etc/InstantiationType.hpp
 Etc/InstructionType.hpp
 Etc/Libraries.hpp
-DataStructs/Micro/KVP.hpp
-DataStructs/Storage.hpp
 Parsing/flexcpp/Scanner.hpp
 
 LEVEL: 1
 
 DataStructs/Micro/Node.hpp
+	Etc/InstantiationType.hpp
 	Etc/Libraries.hpp
 Etc/Globals.hpp
 	Etc/Libraries.hpp
@@ -33,34 +35,42 @@ Parsing/bisoncpp/Parser.hpp
 
 LEVEL: 2
 
-DataStructs/Macro/Linear.hpp
-	DataStructs/Micro/KVP.hpp
+DataStructs/Macro/Tube.hpp
 	DataStructs/Micro/Node.hpp
 	Etc/Libraries.hpp
 DataStructs/Micro/ExecBlocks.proto
 	DataStructs/Micro/Node.hpp
+	Etc/InstantiationType.hpp
 	Etc/InstructionType.hpp
 
 LEVEL: 3
 
-DataStructs/Micro/Details.hpp
-	DataStructs/Macro/Linear.hpp
-	DataStructs/Micro/ExecBlocks.proto
-	Etc/Libraries.hpp
+DataStructs/Macro/List.hpp
+	DataStructs/Storage.hpp
+	DataStructs/Micro/KVP.hpp
 
 LEVEL: 4
+
+DataStructs/Micro/Details.hpp
+	DataStructs/Macro/List.hpp
+	DataStructs/Micro/ExecBlocks.proto
+	Etc/InstantiationType.hpp
+	Etc/Libraries.hpp
+
+LEVEL: 5
 
 DataStructs/Micro/ExecBlocks.hpp
 	DataStructs/Micro/Details.hpp
 	DataStructs/Micro/ExecBlocks.proto
+	Etc/InstantiationType.hpp
 	Etc/InstructionType.hpp
 
-LEVEL: 5
+LEVEL: 6
 
 Parsing/ParseEnv.hpp
 	//TODO: List dependencies here
 
-LEVEL: 6
+LEVEL: 7
 
 Execution/RunEnv.hpp
 	//TODO: List dependencies here

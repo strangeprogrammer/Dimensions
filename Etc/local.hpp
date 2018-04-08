@@ -1,5 +1,6 @@
 #if LEVEL == 0
 
+#include "InstantiationType.hpp"
 #include "InstructionType.hpp"
 #include "Libraries.hpp"
 

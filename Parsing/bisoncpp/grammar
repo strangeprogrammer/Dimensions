@@ -106,12 +106,12 @@ velocity
 arithmetic
 : NUMBER PLUS /*{
 	add* temp=new add();
-	temp->d->number=atoi(yyval);//Fix this so that it doesn't use 'yyval'
+	temp->d->value=atoi(yyval);//Fix this so that it doesn't use 'yyval'
 	$$=temp;
 }*/
 | NUMBER MINUS /*{
 	sub* temp=new sub();
-	temp->d->number=atoi(yyval);//Fix this so that it doesn't use 'yyval'
+	temp->d->value=atoi(yyval);//Fix this so that it doesn't use 'yyval'
 	$$=temp;
 }*/
 ;
