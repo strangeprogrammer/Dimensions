@@ -1,28 +1,39 @@
 SUBFOLDERS	:= 
-HEADERS		:= 
+HEADERS		:= Parser.proto Parser.hpp
 SOURCES		:= 
 include make.i
 
-#Project related
+../flexcpp/Scanner.cpp : ../flexcpp/lexer
+	$(MAKE) -C ../flexcpp/ Scanner.cpp
 
-parser_module.o : Parser.cpp
-	echo "Compiling parser module..."
-	$(COMP) ./parser_module.o ./Parser.cpp
+ifeq ($(TEST),true)
+GTARGET := testgrammar
+else
+GTARGET := grammar
+endif
 
-Parser.cpp : grammar
-	[ -f ./Parserbase.hpp -o -f ./Parser.hpp -o -f ./Parser.ihpp -o -f ./Parser.cpp ] || echo "Removing leftover parser source files..."
-	rm ./Parserbase.hpp ./Parser.hpp ./Parser.ihpp ./Parser.cpp &>/dev/null || true
+Parser.cpp : $(GTARGET)
+	$(MAKE) clean
 	echo "Creating parser source files..."
-	bisonc++ -b Parserbase.hpp -c Parser.hpp -i Parser.ihpp -p Parser.cpp grammar
+	bisonc++ -b Parser.proto -c Parser.hpp -i Parser.ihpp -p Parser.cpp $(GTARGET)
 
 #For testing and debugging purposes
 
-parsertest : parser_module.o testparser.o ../flexcpp/scanner_module.o
-	$(call testDebug)
-	echo "Linking parser testing executable..."
-	$(LINK) ./parsertest ./parser_module.o ./testparser.o ../flexcpp/scanner_module.o
+parsertest : testparser.cpp Parser.cpp ../flexcpp/Scanner.cpp
+	echo "Compiling and linking parser testing executable..."
+	$(LINK) ./parsertest ./testparser.cpp
 
-testparser.o : testparser.cpp
-	$(call testDebug)
-	echo "Compiling parser testing module..."
-	$(COMP) ./testparser.o ./testparser.cpp
+listvars ::
+	echo "GTARGET     = $(GTARGET)"
+
+clean ::
+	$(call cleanup,Parser.proto,"Parser.proto")
+
+clean ::
+	$(call cleanup,Parser.hpp,"Parser.hpp")
+
+clean ::
+	$(call cleanup,Parser.ihpp,"Parser.ihpp")
+
+clean ::
+	$(call cleanup,Parser.cpp,"Parser.cpp")

@@ -1,10 +1,12 @@
-//Test string: (abcdefghijklmnopqrstuvwxyz>abcdefghijklmnopqrstuvwxyz<)(&#~@)(0987654321+)(0-)(%)(£)($)([)(1-)(])(/)
+//TODO: Finish me (stuff after looping)
+//Test string: (abcdefghijklmnopqrstuvwxyz>abcdefghijklmnopqrstuvwxyz<)(&#~@)(0987654321+)(0-)(%)(£)($)([)([)([)([)(1-)(])(])(])(])(/)
 
 //For debugging purposes only
+%debug
 %print-tokens
 
-%scanner "../flexcpp/Scanner.hpp"
-%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII LBRKT RBRKT NOOP NUMBER LETTERS
+%default-actions std
+%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER
 %start commands
 
 /*
@@ -15,61 +17,39 @@ parser.parse();
 
 %%
 commands
-: /*empty*/ {
-	#ifdef DEBUG
-	std::cout << "TERMINATOR" << std::endl;
-	#endif //DEBUG
-}
-| commands command /*{
-	env->progend->appendNext($2);
-	env->progend=env->progend->next;
-	if(env->resolve){
-		env->resolve->backpop()->d->target=env->progend;
-	}
-}*/
+: /*empty*/
+| commands command
 ;
 
 command
-: LPAREN action RPAREN /*{
-	$$=$2;
-}*/
-| while /*{
-}*/ commands endwhile /*{
-}*/
-;
-
-while
-: LPAREN LBRKT RPAREN /*{
-	tzj* temp=new tzj();
-	env->jstack->frontpush(temp);
-	$$=temp;
-}*/
-;
-
-endwhile
-: LPAREN RBRKT RPAREN /*{
-	jmp* temp=new jmp();
-	tzj* ret=env->jstack->frontpop();
-	temp->d->target=ret;
-	env->resolve->frontpush(ret);
-	$$=temp;
-}*/
+: LPAREN action RPAREN {
+	env.append($2);
+}
+| WHILE {
+	env.append(new tzj());
+	env.jpush();
+} commands ENDWHILE {
+	env.append(new jmp());
+	env.jpop();
+}
 ;
 
 action
-: motion		//{$$=$1;}
-| literal_velocity	//{$$=$1;}
-| store_velocity	//{$$=$1;}
-| arithmetic		//{$$=$1;}
-| input			//{$$=$1;}
-| output		//{$$=$1;}
-| noop			//{$$=$1;}
+: motion
+| literal_velocity
+| store_velocity
+| arithmetic
+| input
+| output
+| noop
 ;
 
 letters
-: LETTERS /*{
+: letters LETTER /*{
+	
 }*/
 | /*empty*/ /*{
+	$$=new Axes();
 }*/
 ;
 

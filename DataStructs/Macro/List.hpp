@@ -1,66 +1,63 @@
-//This is a very dumb linked list for testing purposes
-#define PAIR KVP<K,V>
-#define SUPER Tube<PAIR>
-template <typename K,typename V> class List:public Storage<K,V>,private SUPER{
-	private:
-	using SUPER::frontpush;
-	using SUPER::frontpop;
-	using SUPER::backpush;
-	using SUPER::backpop;
-	
-	void locate(K key){
-		PAIR temp;
-		for(unsigned long i=0;i<getSize();i++){
-			backpush(temp=frontpop());
-			if(temp.unlock(key)){
-				break;
+namespace Linear{
+	//This is a very dumb linked list for testing purposes
+	#define PAIR KVP<K,V>
+	#define SUPER Tube<PAIR>
+	template <typename K,typename V> class List:public Storage<K,V>{
+		private:
+		SUPER t;
+		
+		void locate(K key){
+			PAIR temp;
+			for(unsigned long i=0;i<getSize();i++){
+				t.backpush(temp=t.frontpop());
+				if(temp.unlock(key)){
+					break;
+				}
 			}
+			return;
 		}
-		return;
-	}
-	
-	public:
-	virtual void insert(K key,V value){
-		frontpush(PAIR(key,value));
-		return;
-	}
-	
-	virtual V* find(K key){
-		V* retval=NULL;
-		if(getSize()){
-			locate(key);
-			PAIR temp=backpop();
-			if(temp.unlock(key)){
-				retval=&(temp.value);
+		
+		public:
+		virtual void insert(K key,V value){
+			t.frontpush(PAIR(key,value));
+			return;
+		}
+		
+		virtual V* find(K key){
+			V* retval=NULL;
+			if(getSize()){
+				locate(key);
+				PAIR temp=t.backpop();
+				if(temp.unlock(key)){
+					retval=&(temp.value);
+				}
+				t.frontpush(temp);
 			}
-			frontpush(temp);
+			return retval;
 		}
-		return retval;
-	}
-	
-	virtual void remove(K key){
-		if(getSize()){
-			locate(key);
-			PAIR temp=backpop();
-			if(!temp.unlock(key)){
-				frontpush(temp);
+		
+		virtual void remove(K key){
+			if(getSize()){
+				locate(key);
+				PAIR temp=t.backpop();
+				if(!temp.unlock(key)){
+					t.frontpush(temp);
+				}
 			}
+			return;
 		}
-		return;
-	}
-	
-	virtual void purge(){
-		SUPER::purge();
-		return;
-	}
-	
-	virtual unsigned long getSize(){
-		return SUPER::getSize();
-	}
-	
-	List():SUPER::Tube(){}
-	
-	virtual ~List(){}
-};
-#undef SUPER
-#undef PAIR
+		
+		virtual void purge(){
+			t.purge();
+			return;
+		}
+		
+		virtual unsigned long getSize(){
+			return t.getSize();
+		}
+		
+		virtual ~List(){}
+	};
+	#undef SUPER
+	#undef PAIR
+}

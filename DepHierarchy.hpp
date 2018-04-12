@@ -1,7 +1,7 @@
 //Uses recursion to include header files of different dependency levels (unbelievably useful for dependency resolution)
 
 #ifndef BOUNDARY
-	#define BOUNDARY 8
+	#define BOUNDARY 16
 #endif //BOUNDARY
 
 #ifndef LEVEL
@@ -28,6 +28,30 @@
 	#undef LEVEL
 	#define LEVEL 7
 #elif LEVEL == 7
+	#undef LEVEL
+	#define LEVEL 8
+#elif LEVEL == 8
+	#undef LEVEL
+	#define LEVEL 9
+#elif LEVEL == 9
+	#undef LEVEL
+	#define LEVEL 10
+#elif LEVEL == 10
+	#undef LEVEL
+	#define LEVEL 11
+#elif LEVEL == 11
+	#undef LEVEL
+	#define LEVEL 12
+#elif LEVEL == 12
+	#undef LEVEL
+	#define LEVEL 13
+#elif LEVEL == 13
+	#undef LEVEL
+	#define LEVEL 14
+#elif LEVEL == 14
+	#undef LEVEL
+	#define LEVEL 15
+#elif LEVEL == 15
 	#undef LEVEL
 	#define LEVEL BOUNDARY
 #endif //LEVEL

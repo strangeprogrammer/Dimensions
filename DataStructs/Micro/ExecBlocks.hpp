@@ -24,29 +24,31 @@ namespace ExecBlocks{
 	using namespace Globals;
 	
 	//Original code from here on fully mashed into preprocessor directives :)
-	#define CONSTTEMP(name,cargs,type,dtype,dargs)\
+	#define VANILLA(name,type)\
+	class name:CONCRETE,public BASE{\
 		public:\
-		name(cargs):BASET<type,dtype>::BASET(){this->d=new dtype(dargs);}\
-		~name(){delete this->d;}
+		name():BASE::BASE(type){}\
+		~name(){}\
+	}
+	#define CHOCOLATE(name,type,ctype,carg,dtype)\
+	class name:CONCRETE,public BASET<type,dtype>{\
+		public:\
+		name(ctype carg):BASET<type,dtype>::BASET(){this->d=new dtype(carg);}\
+		/*Make sure to only pass values allocated from the heap to this*/\
+		name(dtype* d):BASET<type,dtype>::BASET(){this->d=d;}\
+		~name(){delete this->d;}\
+	}
 	
-	//Maybe change this next line so that the default number of dimensions can be changed
-	#define AXESCONF(name,type) CONSTTEMP(name,,type,Axes,dimensions)
-	#define NUMBERCONF(name,type) CONSTTEMP(name,long value,type,Number,value)
-	#define JUMPCONF(name,type) CONSTTEMP(name,BASE* target,type,Jump,target)
+	#define AXESCONF(name,type) CHOCOLATE(name,type,long,cartesian,Axes)
+	#define NUMBERCONF(name,type) CHOCOLATE(name,type,long,value,Number)
+	#define JUMPCONF(name,type) CHOCOLATE(name,type,BASE*,target,Jump)
 	
-	#define VANILLA(name,type) class name:CONCRETE,public BASE{}
-	#define CHOCOLATE(name,type,dtype,config) class name:CONCRETE,public BASET<type,dtype>{config(name,type)}
+	AXESCONF(mov,MOV);
+	AXESCONF(setv,SETV);
+	AXESCONF(strv,STRV);
 	
-	#define AXOID(name,type) CHOCOLATE(name,type,Axes,AXESCONF)
-	#define NUMOID(name,type) CHOCOLATE(name,type,Number,NUMBERCONF)
-	#define JUMPOID(name,type) CHOCOLATE(name,type,Jump,JUMPCONF)
-	
-	AXOID(mov,MOV);
-	AXOID(setv,SETV);
-	AXOID(strv,STRV);
-	
-	NUMOID(add,ADD);
-	NUMOID(sub,SUB);
+	NUMBERCONF(add,ADD);
+	NUMBERCONF(sub,SUB);
 	
 	VANILLA(getc,GETC);
 	VANILLA(putn,PUTN);
@@ -55,21 +57,15 @@ namespace ExecBlocks{
 	VANILLA(noop,NOOP);
 	VANILLA(halt,HALT);
 	
-	JUMPOID(tzj,TZJ);
-	JUMPOID(jmp,JMP);
-	
-	#undef AXOID
-	#undef NUMOID
-	#undef JUMPOID
-	
-	#undef CLASSCONF
-	#undef VANILLA
+	JUMPCONF(tzj,TZJ);
+	JUMPCONF(jmp,JMP);
 	
 	#undef JUMPCONF
 	#undef NUMBERCONF
 	#undef AXESCONF
 	
-	#undef CONSTTEMP
+	#undef CHOCOLATE
+	#undef VANILLA
 	
 	#undef BASET
 	#undef BASE

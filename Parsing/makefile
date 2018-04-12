@@ -1,4 +1,4 @@
 SUBFOLDERS	:= flexcpp bisoncpp
-HEADERS		:= 
+HEADERS		:= ParseEnv.hpp
 SOURCES		:= 
 include make.i

@@ -1,0 +1,66 @@
+//Test string: (abcdefghijklmnopqrstuvwxyz>abcdefghijklmnopqrstuvwxyz<)(&#~@)(0987654321+)(0-)(%)(£)($)([)([)([)([)(1-)(])(])(])(])(/)
+
+//For debugging purposes only
+%print-tokens
+
+%scanner "../flexcpp/Scanner.hpp"
+%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER
+%start commands
+
+/*
+Invoke parser with:
+Parser parser;
+parser.parse();
+*/
+
+%%
+commands
+: commands command
+| /*empty*/
+;
+
+command
+: action
+| WHILE commands ENDWHILE
+;
+
+action
+: enclosed
+| LPAREN nonenclosed RPAREN
+;
+
+enclosed
+: INASCII
+| OUTNUM
+| OUTASCII
+| NOOP
+;
+
+nonenclosed
+: motion
+| velocity
+| store_velocity
+| arithmetic
+;
+
+letters
+: letters LETTER
+| /*empty*/
+;
+
+motion
+: letters MFORE letters MBACK
+;
+
+velocity
+: letters VFORE letters VBACK letters VZERO
+;
+
+store_velocity
+: VSTORE velocity
+;
+
+arithmetic
+: NUMBER PLUS
+| NUMBER MINUS
+;

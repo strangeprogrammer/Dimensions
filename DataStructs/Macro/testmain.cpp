@@ -36,6 +36,7 @@ namespace Linear{
 */
 
 using namespace std;
+using namespace Linear;
 
 int main(){
 	Tube<int> t=Tube<int>();

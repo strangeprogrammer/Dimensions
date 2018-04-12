@@ -1,32 +1,33 @@
 SUBFOLDERS	:= 
-HEADERS		:= 
+HEADERS		:= Scanner.proto Scanner.hpp
 SOURCES		:= 
 include make.i
 
-scanner_module.o : Scanner.cpp
-	echo "Compiling scanner module..."
-	$(COMP) ./scanner_module.o ./Scanner.cpp
-
 Scanner.cpp : lexer
-	[ -f ./Scannerbase.hpp -o -f ./Scanner.hpp -o -f ./Scanner.ihpp -o -f ./Scanner.cpp ] || echo "Removing leftover scanner source files..."
-	rm ./Scannerbase.hpp ./Scanner.hpp ./Scanner.ihpp ./Scanner.cpp &>/dev/null || true
+	$(MAKE) clean
 	echo "Creating scanner source files..."
-	flexc++ -b Scannerbase.hpp -c Scanner.hpp -i Scanner.ihpp -l Scanner.cpp lexer
+	flexc++ -b Scanner.proto -c Scanner.hpp -i Scanner.ihpp -l Scanner.cpp lexer
 	echo "Modifying scanner headers..."
-	echo '#ifdef DEBUG' >>./Scanner.ihpp
-	echo '	#include "parsingTest.hpp"' >>./Scanner.ihpp
-	echo '#else //DEBUG' >>./Scanner.ihpp
-	echo '	#include "all.hpp"' >>./Scanner.ihpp
-	echo '#endif //DEBUG' >>./Scanner.ihpp
+	{
+		echo '#ifdef DEBUG'
+		echo '	#include "parsingTest.hpp"'
+		echo '#endif //DEBUG'
+	} 1>>./Scanner.ihpp
 
 #For testing and debugging purposes
 
-scannertest : scanner_module.o testscanner.o
-	$(call testDebug)
-	echo "Linking scanner testing executable..."
-	$(LINK) ./scannertest ./scanner_module.o ./testscanner.o
+scannertest : testscanner.cpp Scanner.cpp
+	echo "Compiling and linking scanner testing executable..."
+	$(LINK) ./scannertest ./testscanner.cpp
 
-testscanner.o : testscanner.cpp
-	$(call testDebug)
-	echo "Compiling scanner testing module..."
-	$(COMP) ./testscanner.o ./testscanner.cpp
+clean ::
+	$(call cleanup,Scanner.proto,"Scanner.proto")
+
+clean ::
+	$(call cleanup,Scanner.hpp,"Scanner.hpp")
+
+clean ::
+	$(call cleanup,Scanner.ihpp,"Scanner.ihpp")
+
+clean ::
+	$(call cleanup,Scanner.cpp,"Scanner.cpp")

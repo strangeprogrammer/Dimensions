@@ -1,4 +1,8 @@
-#if LEVEL == 1
+#if LEVEL == 0
+
+#include "Parser.proto"
+
+#elif LEVEL == 3
 
 #include "Parser.hpp"
 

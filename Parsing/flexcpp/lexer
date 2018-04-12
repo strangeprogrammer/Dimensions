@@ -1,4 +1,4 @@
-//Test string: ()><&#~@+-%£$[]/0987654321sduxhrkjghjeyrhdf
+//Test string: ()><&#~@+-(%)(£)($)([)(])(/)0987654321Linux
 
 /*
 Invoke scanner with:
@@ -67,37 +67,37 @@ scanner.lex()
 			#endif /*DEBUG*/
 			return Parser::MINUS;
 		}
-\%		{
+\(\%\)		{
 			#ifdef DEBUG
 			std::cout << "INASCII ";
 			#endif /*DEBUG*/
 			return Parser::INASCII;
 		}
-£		{
+\(£\)		{
 			#ifdef DEBUG
 			std::cout << "OUTNUM ";
 			#endif /*DEBUG*/
 			return Parser::OUTNUM;
 		}
-\$		{
+\(\$\)		{
 			#ifdef DEBUG
 			std::cout << "OUTASCII ";
 			#endif /*DEBUG*/
 			return Parser::OUTASCII;
 		}
-\[		{
+\(\[\)		{
 			#ifdef DEBUG
-			std::cout << "LBRKT ";
+			std::cout << "WHILE ";
 			#endif /*DEBUG*/
-			return Parser::LBRKT;
+			return Parser::WHILE;
 		}
-\]		{
+\(\]\)		{
 			#ifdef DEBUG
-			std::cout << "RBRKT ";
+			std::cout << "ENDWHILE ";
 			#endif /*DEBUG*/
-			return Parser::RBRKT;
+			return Parser::ENDWHILE;
 		}
-\/		{
+\(\/\)		{
 			#ifdef DEBUG
 			std::cout << "NOOP ";
 			#endif /*DEBUG*/
@@ -109,10 +109,10 @@ scanner.lex()
 			#endif /*DEBUG*/
 			return Parser::NUMBER;
 		}
-[a-zA-Z]+	{
+[a-zA-Z]	{
 			#ifdef DEBUG
-			std::cout << "LETTERS ";
+			std::cout << "LETTER ";
 			#endif /*DEBUG*/
-			return Parser::LETTERS;
+			return Parser::LETTER;
 		}
 [ \n\t]+	/*ignore whitespace*/;

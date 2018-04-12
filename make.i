@@ -26,8 +26,6 @@ define testDebug
 	fi
 endef
 
-#TODO: Implement compiled headers later
-GCHEADERS	:= $(patsubst %.hpp,%.gchpp,$(HEADERS))
 OBJECTS		:= $(patsubst %.cpp,%.o,$(SOURCES))
 
 #Set up some variable export rules
@@ -44,7 +42,7 @@ unexport SUBFOLDERS HEADERS SOURCES GCHEADERS OBJECTS	#Don't export site-specifi
 #Make the variable dump the default for safety purposes
 .DEFAULT : listvars
 
-listvars :
+listvars ::
 	echo "make invoked as \"$(MAKE)\""
 	echo "SHELL       = $(SHELL)"
 	echo ".SHELLFLAGS = $(.SHELLFLAGS)"
@@ -75,9 +73,12 @@ $(OBJECTS) : %.o : %.cpp
 	echo "Compiling $@..."
 	$(COMP) $@ $^
 
-clean :
-	echo "Removing all object files and compiled headers..."
-	rm -f $(OBJECTS) $(GCHEADERS) >/dev/null 2>&1 || return true
+define cleanup
+	rm $1 &>/dev/null && echo "Removing leftover $2..." || true
+endef
+
+clean ::
+	$(call cleanup,$(OBJECTS),"object files")
 
 #For updating timestamps recursively throughout the project
 

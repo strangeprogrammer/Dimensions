@@ -21,7 +21,7 @@ DataStructs/Micro/KVP.hpp
 Etc/InstantiationType.hpp
 Etc/InstructionType.hpp
 Etc/Libraries.hpp
-Parsing/flexcpp/Scanner.hpp
+Parsing/bisoncpp/Parser.proto
 
 LEVEL: 1
 
@@ -30,8 +30,8 @@ DataStructs/Micro/Node.hpp
 	Etc/Libraries.hpp
 Etc/Globals.hpp
 	Etc/Libraries.hpp
-Parsing/bisoncpp/Parser.hpp
-	Parsing/flexcpp/Scanner.hpp
+Parsing/flexcpp/Scanner.proto
+	Parsing/bisoncpp/Parser.proto
 
 LEVEL: 2
 
@@ -42,12 +42,17 @@ DataStructs/Micro/ExecBlocks.proto
 	DataStructs/Micro/Node.hpp
 	Etc/InstantiationType.hpp
 	Etc/InstructionType.hpp
+Parsing/flexcpp/Scanner.hpp
+	Parsing/flexcpp/Scanner.proto
 
 LEVEL: 3
 
 DataStructs/Macro/List.hpp
 	DataStructs/Storage.hpp
 	DataStructs/Micro/KVP.hpp
+Parsing/bisoncpp/Parser.hpp
+	Parsing/bisoncpp/Parser.proto
+	Parsing/flexcpp/Scanner.hpp
 
 LEVEL: 4
 
@@ -68,7 +73,9 @@ DataStructs/Micro/ExecBlocks.hpp
 LEVEL: 6
 
 Parsing/ParseEnv.hpp
-	//TODO: List dependencies here
+	DataStructs/Macro/Tube.hpp
+	DataStructs/Micro/ExecBlocks.proto
+	DataStructs/Micro/ExecBlocks.hpp
 
 LEVEL: 7
 

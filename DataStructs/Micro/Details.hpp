@@ -3,7 +3,7 @@ namespace Details{
 	
 	#define V long
 	#define K unsigned long
-	#define SUPER List<K,V>
+	#define SUPER Linear::List<K,V>
 	#define SUPERC SUPER::List
 	class Axes:CONCRETE,public DetailsBase,public SUPER{
 		public:
