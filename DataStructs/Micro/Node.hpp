@@ -1,3 +1,6 @@
+#ifndef NODE_HPP
+#define NODE_HPP
+
 //Please don't mix the node types here
 namespace Node{
 	template <typename T,typename N> class SLNBase:ABSTRACT{
@@ -104,3 +107,5 @@ namespace Node{
 	#undef SUPERC
 	#undef SUPER
 }
+
+#endif //NODE_HPP

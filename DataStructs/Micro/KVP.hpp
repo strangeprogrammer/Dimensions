@@ -1,3 +1,6 @@
+#ifndef KVP_HPP
+#define KVP_HPP
+
 template <typename K,typename V> class KVP{
 	public:
 	K key;
@@ -20,3 +23,5 @@ template <typename K,typename V> class KVP{
 	
 	~KVP(){}
 };
+
+#endif //KVP_HPP

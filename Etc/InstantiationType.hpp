@@ -1,3 +1,6 @@
+#ifndef INSTANTIATIONTYPE_HPP
+#define INSTANTIATIONTYPE_HPP
+
 class abstract{
 	public:
 	virtual void dummy()=0;
@@ -11,3 +14,5 @@ class concrete:ABSTRACT{
 	virtual ~concrete(){}
 };
 #define CONCRETE virtual private concrete
+
+#endif //INSTANTIATIONTYPE_HPP

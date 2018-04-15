@@ -1,0 +1,8 @@
+#ifndef PARSEENV_PROTO
+#define PARSEENV_PROTO
+
+namespace Parsing{
+	class ParseEnv;
+}
+
+#endif //PARSEENV_PROTO

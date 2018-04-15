@@ -1,70 +1,65 @@
 //Uses recursion to include header files of different dependency levels (unbelievably useful for dependency resolution)
 
-#ifndef BOUNDARY
-	#define BOUNDARY 16
-#endif //BOUNDARY
-
-#ifndef LEVEL
-	#define LEVEL 0
-#elif LEVEL == 0
-	#undef LEVEL
-	#define LEVEL 1
-#elif LEVEL == 1
-	#undef LEVEL
-	#define LEVEL 2
-#elif LEVEL == 2
-	#undef LEVEL
-	#define LEVEL 3
-#elif LEVEL == 3
-	#undef LEVEL
-	#define LEVEL 4
-#elif LEVEL == 4
-	#undef LEVEL
-	#define LEVEL 5
-#elif LEVEL == 5
-	#undef LEVEL
-	#define LEVEL 6
-#elif LEVEL == 6
-	#undef LEVEL
-	#define LEVEL 7
-#elif LEVEL == 7
-	#undef LEVEL
-	#define LEVEL 8
-#elif LEVEL == 8
-	#undef LEVEL
-	#define LEVEL 9
-#elif LEVEL == 9
-	#undef LEVEL
-	#define LEVEL 10
-#elif LEVEL == 10
-	#undef LEVEL
-	#define LEVEL 11
-#elif LEVEL == 11
-	#undef LEVEL
-	#define LEVEL 12
-#elif LEVEL == 12
-	#undef LEVEL
-	#define LEVEL 13
-#elif LEVEL == 13
-	#undef LEVEL
-	#define LEVEL 14
-#elif LEVEL == 14
-	#undef LEVEL
-	#define LEVEL 15
-#elif LEVEL == 15
-	#undef LEVEL
-	#define LEVEL BOUNDARY
-#endif //LEVEL
-
-#if LEVEL < BOUNDARY
+#ifndef Parser_h_included
 	#include "up.hpp"
-	#include "DepHierarchy.hpp" //Recursion occurs 'BOUNDARY' times
-#endif //LEVEL
-
-#ifdef LEVEL
-	#undef LEVEL
-#endif //LEVEL
-
-#ifdef BOUNDARY
-	#undef BOUNDARY
-#endif //BOUNDARY
+	#ifdef INCLUDE_DEBUG
+		#ifdef INSTRUCTIONTYPE_HPP
+			#warning INSTRUCTIONTYPE_HPP
+		#endif
+		#ifdef INSTANTIATIONTYPE_HPP
+			#warning INSTANTIATIONTYPE_HPP
+		#endif
+		#ifdef GLOBALS_HPP
+			#warning GLOBALS_HPP
+		#endif
+		#ifdef LIBRARIES_HPP
+			#warning LIBRARIES_HPP
+		#endif
+		#ifdef RUNENV_HPP
+			#warning RUNENV_HPP
+		#endif
+		#ifdef STORAGE_HPP
+			#warning STORAGE_HPP
+		#endif
+		#ifdef LIST_HPP
+			#warning LIST_HPP
+		#endif
+		#ifdef TUBE_HPP
+			#warning TUBE_HPP
+		#endif
+		#ifdef DETAILS_HPP
+			#warning DETAILS_HPP
+		#endif
+		#ifdef EXECBLOCKS_PROTO
+			#warning EXECBLOCKS_PROTO
+		#endif
+		#ifdef NODE_HPP
+			#warning NODE_HPP
+		#endif
+		#ifdef KVP_HPP
+			#warning KVP_HPP
+		#endif
+		#ifdef EXECBLOCKS_HPP
+			#warning EXECBLOCKS_HPP
+		#endif
+		#ifdef PARSEENV_PROTO
+			#warning PARSEENV_PROTO
+		#endif
+		#ifdef PARSEENV_HPP
+			#warning PARSEENV_HPP
+		#endif
+		#ifdef ParserBase_h_included
+			#warning ParserBase_h_included
+		#endif
+		#ifdef ScannerBASE_H_INCLUDED
+			#warning ScannerBASE_H_INCLUDED
+		#endif
+		#ifdef Scanner_H_INCLUDED_
+			#warning Scanner_H_INCLUDED_
+		#endif
+		#ifdef Parser_h_included
+			#warning Parser_h_included
+		#endif
+	#endif //INCLUDE_DEBUG
+	#include "DepHierarchy.hpp" //Recursion occurs until the last header file is included
+#endif //Parser_h_included

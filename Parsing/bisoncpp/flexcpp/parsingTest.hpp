@@ -22,4 +22,4 @@ enum Parser{
 	LETTER	=18
 };
 
-#endif /*PARSINGTEST_H*/
+#endif //PARSINGTEST_H

@@ -1,39 +1,35 @@
 Notes:------------------------------------------------------------------------------------------------------------------------------
 
-Only files that need to be included along the header file include chain are listed.
-This is because any other files handle their own dependencies.
+Only files that need to be included as final header files are listed.
+Dependencies are ordered according to block - that is, for each name in each block of names, it depends upon at least 1 header from a previous block.
+All of the file's dependencies are listed directly after it and indented 1 tabulation mark.
 
 Format:-----------------------------------------------------------------------------------------------------------------------------
-
-LEVEL: LEVELNUM
 
 Pathname
 	DependencyPathname
 	...
 ...
 
-Listing:----------------------------------------------------------------------------------------------------------------------------
+...
 
-LEVEL: 0
+Listing:----------------------------------------------------------------------------------------------------------------------------
 
 DataStructs/Storage.hpp
 DataStructs/Micro/KVP.hpp
 Etc/InstantiationType.hpp
 Etc/InstructionType.hpp
 Etc/Libraries.hpp
-Parsing/bisoncpp/Parser.proto
+Parsing/ParseEnv.proto
 
-LEVEL: 1
-
-DataStructs/Micro/Node.hpp
-	Etc/InstantiationType.hpp
-	Etc/Libraries.hpp
 Etc/Globals.hpp
 	Etc/Libraries.hpp
-Parsing/flexcpp/Scanner.proto
-	Parsing/bisoncpp/Parser.proto
+	Parsing/ParseEnv.proto
 
-LEVEL: 2
+DataStructs/Micro/Node.hpp
+	Etc/Globals.hpp
+	Etc/InstantiationType.hpp
+	Etc/Libraries.hpp
 
 DataStructs/Macro/Tube.hpp
 	DataStructs/Micro/Node.hpp
@@ -42,19 +38,11 @@ DataStructs/Micro/ExecBlocks.proto
 	DataStructs/Micro/Node.hpp
 	Etc/InstantiationType.hpp
 	Etc/InstructionType.hpp
-Parsing/flexcpp/Scanner.hpp
-	Parsing/flexcpp/Scanner.proto
-
-LEVEL: 3
 
 DataStructs/Macro/List.hpp
 	DataStructs/Storage.hpp
+	DataStructs/Macro/Tube.hpp
 	DataStructs/Micro/KVP.hpp
-Parsing/bisoncpp/Parser.hpp
-	Parsing/bisoncpp/Parser.proto
-	Parsing/flexcpp/Scanner.hpp
-
-LEVEL: 4
 
 DataStructs/Micro/Details.hpp
 	DataStructs/Macro/List.hpp
@@ -62,22 +50,32 @@ DataStructs/Micro/Details.hpp
 	Etc/InstantiationType.hpp
 	Etc/Libraries.hpp
 
-LEVEL: 5
-
 DataStructs/Micro/ExecBlocks.hpp
 	DataStructs/Micro/Details.hpp
 	DataStructs/Micro/ExecBlocks.proto
 	Etc/InstantiationType.hpp
 	Etc/InstructionType.hpp
 
-LEVEL: 6
-
 Parsing/ParseEnv.hpp
 	DataStructs/Macro/Tube.hpp
-	DataStructs/Micro/ExecBlocks.proto
+	DataStructs/Micro/Details.hpp
 	DataStructs/Micro/ExecBlocks.hpp
+	Parsing/ParseEnv.proto
 
-LEVEL: 7
+Parsing/bisoncpp/Parser.proto
+	DataStructs/Micro/Details.hpp
+	DataStructs/Micro/ExecBlocks.proto
+	Etc/Globals.hpp
+	Parsing/ParseEnv.hpp
+
+Parsing/bisoncpp/flexcpp/Scanner.proto
+	Parsing/bisoncpp/Parser.proto
+
+Parsing/bisoncpp/flexcpp/Scanner.hpp
+	Parsing/bisoncpp/flexcpp/Scanner.proto
+
+Parsing/bisoncpp/Parser.hpp
+	Parsing/bisoncpp/flexcpp/Scanner.hpp
 
 Execution/RunEnv.hpp
 	//TODO: List dependencies here

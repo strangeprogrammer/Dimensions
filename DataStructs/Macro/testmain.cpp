@@ -10,7 +10,7 @@ namespace Linear{
 		T frontpeek();
 		void backpush(T datum);
 		T backpop();
-		T backpeep();
+		T backpeek();
 		void roll(long hops);
 		unsigned long getSize();
 		virtual void purge();
@@ -57,8 +57,8 @@ int main(){
 	cout << "Pushed 4574 onto front" << endl;
 	cout << "Tubesize Now:              " << t.getSize()		<< endl;
 	
-	cout << "Back value:                " << t.backpeep()		<< endl;
-	cout << "Again:                     " << t.backpeep()		<< endl;
+	cout << "Back value:                " << t.backpeek()		<< endl;
+	cout << "Again:                     " << t.backpeek()		<< endl;
 	cout << "Size:                      " << t.getSize()		<< endl;
 	cout << "Back value removed:        " << t.backpop()		<< endl;
 	cout << "Size:                      " << t.getSize()		<< endl;
@@ -211,6 +211,11 @@ int main(){
 	l.insert(6,7);
 	cout << "Inserted K=0:V=1 K=2:V=3 K=4:V=5 K=6:V=7" << endl;
 	cout << "Size:                      " << l.getSize()		<< endl;
+	
+	KVP<int,int>* temp=l.rmrandom();
+	cout << "RmRandom K=" << temp->key << ":V=" << temp-> value	<< endl;
+	cout << "Size:                      " << l.getSize()		<< endl;
+	delete temp;
 	
 	l.purge();
 	cout << "Purged everything" << endl;

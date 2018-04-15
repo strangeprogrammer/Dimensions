@@ -27,6 +27,8 @@ int main(){
 	
 	slna.appendSucc(slnc.spliceSucc());
 	
+	//C->A->B
+	
 	cerr <<
 	"slnc:       " << &slnc		<< endl <<
 	"slnc.datum: " << slnc.datum	<< endl <<
@@ -45,6 +47,8 @@ int main(){
 	
 	dlnc.appendSucc(dlna.appendSucc(&dlna)->appendSucc(&dlnb)->appendSucc(&dlnc)->spliceSucc());
 	
+	//A<->B<->C
+	
 	cerr <<
 	"dlna.prev:  " << dlna.prev	<< endl <<
 	"dlna:       " << &dlna		<< endl <<
@@ -61,7 +65,7 @@ int main(){
 	
 	using namespace Details;
 	
-	Axes fiftytwo=Axes();
+	Axes fiftytwo=Axes(52);
 	Axes one=Axes(1);
 	Number num=Number(10);
 	InstructionTemp<ADD,Number> itemp=InstructionTemp<ADD,Number>();

@@ -1,3 +1,6 @@
+#ifndef INSTRUCTIONTYPE_HPP
+#define INSTRUCTIONTYPE_HPP
+
 enum InstructionType:char{
 	MOV,		//Move
 	SETV,		//Set Velocity
@@ -7,9 +10,10 @@ enum InstructionType:char{
 	GETC,		//Get Character
 	PUTN,		//Put Number
 	PUTC,		//Put Character
-	LODV,		//Load Velocity
 	TZJ,		//Test for 0 and Jump
 	JMP,		//Jump Unconditionally
 	NOOP,		//No Operation
 	HALT		//Halt
 };
+
+#endif //INSTRUCTIONTYPE_HPP

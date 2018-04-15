@@ -1,21 +1,41 @@
-#if LEVEL == 0
+#ifdef INCLUDE_DEBUG
+#warning
+#endif //INCLUDE_DEBUG
 
 #include "KVP.hpp"
 
-#elif LEVEL == 1
-
+#ifdef GLOBALS_HPP
+#ifdef INSTANTIATIONTYPE_HPP
+#ifdef LIBRARIES_HPP
 #include "Node.hpp"
+#endif //LIBRARIES_HPP
+#endif //INSTANTIATIONTYPE_HPP
+#endif //GLOBALS_HPP
 
-#elif LEVEL == 2
-
+#ifdef NODE_HPP
+#ifdef INSTANTIATIONTYPE_HPP
+#ifdef INSTRUCTIONTYPE_HPP
 #include "ExecBlocks.proto"
+#endif //INSTRUCTIONTYPE_HPP
+#endif //INSTANTIATIONTYPE_HPP
+#endif //NODE_HPP
 
-#elif LEVEL == 4
-
+#ifdef LIST_HPP
+#ifdef EXECBLOCKS_PROTO
+#ifdef INSTANTIATIONTYPE_HPP
+#ifdef LIBRARIES_HPP
 #include "Details.hpp"
+#endif //LIBRARIES_HPP
+#endif //INSTANTIATIONTYPE_HPP
+#endif //EXECBLOCKS_PROTO
+#endif //LIST_HPP
 
-#elif LEVEL == 5
-
+#ifdef DETAILS_HPP
+#ifdef EXECBLOCKS_PROTO
+#ifdef INSTANTIATIONTYPE_HPP
+#ifdef INSTRUCTIONTYPE_HPP
 #include "ExecBlocks.hpp"
-
-#endif //LEVEL
+#endif //INSTRUCTIONTYPE_HPP
+#endif //INSTANTIATIONTYPE_HPP
+#endif //EXECBLOCKS_PROTO
+#endif //DETAILS_HPP

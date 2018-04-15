@@ -1,3 +1,6 @@
+#ifndef DETAILS_HPP
+#define DETAILS_HPP
+
 namespace Details{
 	class DetailsBase:ABSTRACT{};
 	
@@ -26,7 +29,7 @@ namespace Details{
 			return;
 		}
 		
-		Axes():Axes(52){}
+		Axes():Axes(0){}
 		
 		~Axes(){}
 	};
@@ -63,3 +66,5 @@ namespace Details{
 		}
 	};
 }
+
+#endif //DETAILS_HPP

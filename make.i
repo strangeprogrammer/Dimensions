@@ -1,46 +1,100 @@
 #Path to all makefiles (excluding Template):
-#./{,DataStructs/{,M{i,a}cro},Execution,Etc,Parsing/{,{flex,bison}cpp}}/makefile
+#./{,DataStructs/{,M{i,a}cro},Execution,Etc,Parsing/{,bisoncpp{,/flexcpp}}}/makefile
+
+#Important stuff for the rest of the makefile
 
 #Execute each target using only 1 subshell per target
 SHELL		:= /bin/bash
 .SHELLFLAGS	:= -e $(.SHELLFLAGS)
 .ONESHELL : $(SHELL)
 
-#For compiling and linking the program
-ifeq ($(DEBUG),true)
-DBGFLAGS	:= -ggdb -DDEBUG=
-else
-DBGFLAGS	:= 
-endif
-COMPILER	:= g++
-CFLAGS		:= -std=c++11 -Wall -Wpedantic
-CPP		:= $(COMPILER) $(CFLAGS) $(DBGFLAGS)
-COMP		:= $(CPP) -c -o
-LINK		:= $(CPP) -o
-
-define testDebug
-	if [ "$(DEBUG)" != "true" ]
-	then
-		echo "Target '$@' requires the \"DEBUG\" variable to be set to 'true'."
-		exit 1
-	fi
-endef
-
-OBJECTS		:= $(patsubst %.cpp,%.o,$(SOURCES))
-
-#Set up some variable export rules
-export							#Export all variables by default
-export SHELL .SHELLFLAGS				#These require explicit exportion
-unexport SUBFOLDERS HEADERS SOURCES GCHEADERS OBJECTS	#Don't export site-specific variables
-
-#Targets that aren't real files
-.PHONY : listvars clean link compile update
+#Make the variable dump the default action for safety purposes
+.DEFAULT_GOAL	:= listvars
 
 #Make 'make' be silent
 .SILENT :
 
-#Make the variable dump the default for safety purposes
-.DEFAULT : listvars
+#Disable implicit rules
+.SUFFIXES :
+
+#Set up some variable export rules
+export							#Export all variables by default
+export SHELL .SHELLFLAGS				#These require explicit exportion
+unexport SUBFOLDERS HEADERS SOURCES OBJECTS UPO UPH	#Don't export site-specific variables
+
+#Targets that aren't real files
+.PHONY : listvars clean squeaky link compile update force
+
+#Compilation stuff
+
+ifeq ($(DEBUG),true)
+DBGFLAGS	:= $(DBGFLAGS) -ggdb -DDEBUG=
+endif
+COMPILER	:= g++
+CFLAGS		:= -std=c++11 -Wall -Wextra -Wpedantic
+EXTRAFLAGS	:= -Wno-unused-parameter -Wno-parentheses
+CPP		:= $(COMPILER) $(CFLAGS) $(EXTRAFLAGS) $(DBGFLAGS)
+COMP		:= $(CPP) -c -o
+LINK		:= ld -r -o
+OUT		:= $(CPP) -o
+
+#Commonly used functions
+
+define testdebug
+	if [ "$($1)" != "true" ]
+	then
+		echo "Target '$@' requires the \"$1\" variable to be set to 'true'."
+		exit 1
+	fi
+endef
+
+define cleanup
+	rm $1 &>/dev/null && echo "Removing $1..." || true
+endef
+
+define touche
+	echo "Updating $$PWD/$@..."
+	touch $@
+endef
+
+#Source file stuff
+
+OBJECTS		:= $(patsubst %.cpp,%.o,$(SOURCES))
+UPO		:= $(addsuffix /up.o,$(SUBFOLDERS))
+
+link : up.o
+
+up.o : $(OBJECTS) $(UPO)
+	echo "Linking $$PWD/$@..."
+	$(LINK) $@ $^
+
+$(UPO) : force
+	echo "Checking directory $$PWD/$(dir $@) for updates..."
+	$(MAKE) -C ./$(dir $@)/ up.o
+
+compile : $(OBJECTS)
+
+$(OBJECTS) : %.o : %.cpp
+	echo "Compiling $$PWD/$@..."
+	$(COMP) $@ $^
+
+#Header file stuff
+
+UPH		:= $(addsuffix /up.hpp,$(SUBFOLDERS))
+
+update : up.hpp
+
+up.hpp : local.hpp $(UPH)
+	$(call touche)
+
+$(UPH) : force
+	echo "Checking directory $$PWD/$(dir $@) for updates..."
+	$(MAKE) -C ./$(dir $@)/ up.hpp
+
+local.hpp : $(HEADERS)
+	$(call touche)
+
+#Miscellaneous utilities
 
 listvars ::
 	echo "make invoked as \"$(MAKE)\""
@@ -49,52 +103,27 @@ listvars ::
 	echo "SUBFOLDERS  = $(SUBFOLDERS)"
 	echo "HEADERS     = $(HEADERS)"
 	echo "SOURCES     = $(SOURCES)"
-	echo "GCHEADERS   = $(GCHEADERS)"
 	echo "OBJECTS     = $(OBJECTS)"
+	echo "UPO         = $(UPO)"
+	echo "UPH         = $(UPH)"
 	echo "DEBUG       = $(DEBUG)"
 	echo "DBGFLAGS    = $(DBGFLAGS)"
 	echo "COMPILER    = $(COMPILER)"
 	echo "CFLAGS      = $(CFLAGS)"
+	echo "EXTRAFLAGS  = $(EXTRAFLAGS)"
 	echo "CPP         = $(CPP)"
 	echo "COMP        = $(COMP)"
 	echo "LINK        = $(LINK)"
-
-#TODO: Expand upon this next part later
-
-link : up.o
-
-up.o : $(OBJECTS)
-	echo "Linking $@..."
-	$(LINK) $@ $^
-
-compile : $(OBJECTS)
-
-$(OBJECTS) : %.o : %.cpp
-	echo "Compiling $@..."
-	$(COMP) $@ $^
-
-define cleanup
-	rm $1 &>/dev/null && echo "Removing leftover $2..." || true
-endef
+	echo "OUT         = $(OUT)"
 
 clean ::
-	$(call cleanup,$(OBJECTS),"object files")
+	for INDEX in $(OBJECTS)
+	do
+		$(call cleanup,$$INDEX)
+	done
+	unset -v INDEX
 
-#For updating timestamps recursively throughout the project
+clean ::
+	$(call cleanup,up.o)
 
-.PHONY : $(SUBFOLDERS)
-
-update : $(SUBFOLDERS)
-	$(MAKE) up.hpp
-
-$(SUBFOLDERS) :
-	echo "Checking directory $$PWD/$@ for updates..."
-	$(MAKE) -C ./$@/ update
-
-up.hpp : $(addsuffix /up.hpp,$(SUBFOLDERS)) local.hpp
-	echo "Updating $$PWD/up.hpp..."
-	touch up.hpp
-
-local.hpp : $(SOURCES) $(HEADERS)
-	echo "Updating $$PWD/local.hpp..."
-	touch local.hpp
+squeaky :: clean

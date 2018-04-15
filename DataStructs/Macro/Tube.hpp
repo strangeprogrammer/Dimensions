@@ -1,3 +1,6 @@
+#ifndef TUBE_HPP
+#define TUBE_HPP
+
 namespace Linear{
 	/* This is basically an amalgamation of a queue, stack, and ring buffer
 	 * Any changes are intended to affect only pointers of internal nodes where possible (gives best big-O time when copying structures with many fields)
@@ -125,3 +128,5 @@ namespace Linear{
 	};
 	#undef DLN
 }
+
+#endif //TUBE_HPP

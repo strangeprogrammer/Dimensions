@@ -1,10 +1,12 @@
+#ifndef LIST_HPP
+#define LIST_HPP
+
 namespace Linear{
 	//This is a very dumb linked list for testing purposes
 	#define PAIR KVP<K,V>
-	#define SUPER Tube<PAIR>
 	template <typename K,typename V> class List:public Storage<K,V>{
 		private:
-		SUPER t;
+		Tube<PAIR> t;
 		
 		void locate(K key){
 			PAIR temp;
@@ -47,6 +49,15 @@ namespace Linear{
 			return;
 		}
 		
+		virtual PAIR* rmrandom(){
+			PAIR* retval=NULL;
+			if(getSize()){
+				retval=new PAIR();
+				*retval=t.backpop();
+			}
+			return retval;
+		}
+		
 		virtual void purge(){
 			t.purge();
 			return;
@@ -58,6 +69,7 @@ namespace Linear{
 		
 		virtual ~List(){}
 	};
-	#undef SUPER
 	#undef PAIR
 }
+
+#endif //LIST_HPP

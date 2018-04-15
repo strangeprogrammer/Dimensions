@@ -1,5 +1,4 @@
-#include "all.hpp"
-#include "Scanner.cpp"
+#include "Scanner.hpp"
 
 using namespace std;
 

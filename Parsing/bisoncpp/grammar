@@ -1,13 +1,4 @@
-//TODO: Finish me (stuff after looping)
-//Test string: (abcdefghijklmnopqrstuvwxyz>abcdefghijklmnopqrstuvwxyz<)(&#~@)(0987654321+)(0-)(%)(£)($)([)([)([)([)(1-)(])(])(])(])(/)
-
-//For debugging purposes only
-%debug
-%print-tokens
-
-%default-actions std
-%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER
-%start commands
+//Test string: (aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)
 
 /*
 Invoke parser with:
@@ -15,116 +6,145 @@ Parser parser;
 parser.parse();
 */
 
+%scanner "flexcpp/Scanner.hpp"
+%default-actions std
+
+%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER
+%start commands
+
+%union {
+	ExecBlocks::Instruction*	INST;
+	Details::Axes*			AXES;
+	Details::Number*		NUM;
+	bool				BOOL;
+}
+%type <INST> action enclosed nonenclosed motion store_velocity literal_velocity arithmetic
+%type <AXES> velocity letters
+%type <NUM> numeric
+%type <BOOL> polarity
+
 %%
 commands
-: /*empty*/
-| commands command
+: commands command
+| /*empty*/
 ;
 
 command
-: LPAREN action RPAREN {
-	env.append($2);
+: action {
+	Globals::env.append($1);
 }
 | WHILE {
-	env.append(new tzj());
-	env.jpush();
+	using namespace std;
+	Globals::env.append(new ExecBlocks::tzj());
+	Globals::env.jpush();
 } commands ENDWHILE {
-	env.append(new jmp());
-	env.jpop();
+	using namespace std;
+	Globals::env.append(new ExecBlocks::jmp());
+	Globals::env.jpop();
 }
 ;
 
 action
-: motion
-| literal_velocity
-| store_velocity
-| arithmetic
-| input
-| output
-| noop
+: enclosed
+| LPAREN nonenclosed RPAREN {
+	$$=$2;
+}
 ;
 
-letters
-: letters LETTER /*{
-	
-}*/
-| /*empty*/ /*{
-	$$=new Axes();
-}*/
+enclosed
+: INASCII {
+	$$=new ExecBlocks::getc();
+}
+| OUTNUM {
+	$$=new ExecBlocks::putn();
+}
+| OUTASCII {
+	$$=new ExecBlocks::putc();
+}
+| NOOP {
+	$$=new ExecBlocks::noop();
+}
+;
+
+nonenclosed
+: motion
+| store_velocity
+| literal_velocity
+| arithmetic
 ;
 
 motion
-: letters MFORE /*{
-	//Do something
-}*/ letters MBACK /*{
-	//Do something else
-}*/
-;
-
-literal_velocity
-: velocity /*{
-	//Do something
-}*/
+: letters MFORE letters MBACK {
+	KVP<unsigned long,long>* temp;
+	while(temp=$3->rmrandom()){
+		$1->set(temp->key,-1);
+		delete temp;
+	}
+	delete $3;
+	$$=new ExecBlocks::mov($1);
+}
 ;
 
 store_velocity
-: VSTORE velocity /*{
-	//Do something
-}*/
+: VSTORE velocity {
+	$$=new ExecBlocks::strv($2);
+}
+;
+
+literal_velocity
+: velocity {
+	$$=new ExecBlocks::setv($1);
+}
 ;
 
 velocity
-: letters /*{
-	//Do something
-}*/ VFORE letters /*{
-	//Do something else
-}*/ VBACK letters /*{
-	//Do something else else
-}*/ VZERO
+: letters VFORE letters VBACK letters VZERO {
+	KVP<unsigned long,long>* temp;
+	while(temp=$3->rmrandom()){
+		$1->set(temp->key,-1);
+		delete temp;
+	}
+	delete $3;
+	while(temp=$5->rmrandom()){
+		$1->set(temp->key,0);
+		delete temp;
+	}
+	delete $5;
+	$$=$1;
+}
+;
+
+letters
+: letters LETTER {
+	$1->set(d_scanner.matched()[0],1);
+	$$=$1;
+}
+| /*empty*/ {
+	$$=new Details::Axes();
+}
 ;
 
 arithmetic
-: NUMBER PLUS /*{
-	add* temp=new add();
-	temp->d->value=atoi(yyval);//Fix this so that it doesn't use 'yyval'
-	$$=temp;
-}*/
-| NUMBER MINUS /*{
-	sub* temp=new sub();
-	temp->d->value=atoi(yyval);//Fix this so that it doesn't use 'yyval'
-	$$=temp;
-}*/
+: numeric polarity {
+	if($2){
+		$$=new ExecBlocks::add($1);
+	}else{
+		$$=new ExecBlocks::sub($1);
+	}
+}
 ;
 
-input
-: INASCII /*{
-	//Do something
-}*/
+numeric
+: NUMBER {
+	$$=new Details::Number(std::stol(d_scanner.matched(),NULL,10));
+}
 ;
 
-output
-: output_number /*{
-	//Do something
-}*/
-| output_ascii /*{
-	//Do something else
-}*/
-;
-
-output_number
-: OUTNUM /*{
-	//Do something
-}*/
-;
-
-output_ascii
-: OUTASCII /*{
-	//Do something
-}*/
-;
-
-noop
-: NOOP /*{
-	//Do something
-}*/
+polarity
+: PLUS {
+	$$=true;
+}
+| MINUS {
+	$$=false;
+}
 ;

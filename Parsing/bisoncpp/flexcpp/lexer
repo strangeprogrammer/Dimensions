@@ -6,113 +6,115 @@ Scanner scanner;
 scanner.lex()
 */
 
+%no-lines
+
 %%
 \(		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "LPAREN ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::LPAREN;
 		}
 \)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "RPAREN ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::RPAREN;
 		}
 \>		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "MFORE ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::MFORE;
 		}
 \<		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "MBACK ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::MBACK;
 		}
 &		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "VSTORE ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::VSTORE;
 		}
 #		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "VFORE ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::VFORE;
 		}
 ~		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "VBACK ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::VBACK;
 		}
 @		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "VZERO ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::VZERO;
 		}
 \+		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "PLUS ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::PLUS;
 		}
 -		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "MINUS ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::MINUS;
 		}
 \(\%\)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "INASCII ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::INASCII;
 		}
 \(£\)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "OUTNUM ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::OUTNUM;
 		}
 \(\$\)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "OUTASCII ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::OUTASCII;
 		}
 \(\[\)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "WHILE ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::WHILE;
 		}
 \(\]\)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "ENDWHILE ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::ENDWHILE;
 		}
 \(\/\)		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "NOOP ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::NOOP;
 		}
 [0-9]+		{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "NUMBER ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::NUMBER;
 		}
 [a-zA-Z]	{
-			#ifdef DEBUG
+			#ifdef SCANNER_DEBUG
 			std::cout << "LETTER ";
-			#endif /*DEBUG*/
+			#endif //SCANNER_DEBUG
 			return Parser::LETTER;
 		}
 [ \n\t]+	/*ignore whitespace*/;

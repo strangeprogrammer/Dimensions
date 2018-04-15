@@ -1,6 +1,10 @@
+#ifndef PARSEENV_HPP
+#define PARSEENV_HPP
+
 namespace Parsing{
 	using namespace ExecBlocks;
 	using namespace Linear;
+	using namespace std;
 	class ParseEnv{
 		private:
 		Tube<Instruction*>	chain;
@@ -29,7 +33,9 @@ namespace Parsing{
 		}
 		
 		ParseEnv& append(Instruction* toappend){
-			chain.backpeek()->appendSucc(toappend);
+			if(chain.getSize()){
+				chain.backpeek()->appendSucc(toappend);
+			}
 			chain.backpush(toappend);
 			resolve(toappend);
 			return *this;
@@ -42,3 +48,5 @@ namespace Parsing{
 		
 	};
 }
+
+#endif //PARSEENV_HPP

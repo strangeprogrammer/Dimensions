@@ -1,3 +1,6 @@
+#ifndef EXECBLOCKS_HPP
+#define EXECBLOCKS_HPP
+
 //If you think this code is really squashed down into preprocessor, just wait until you see what I can REALLY do...
 namespace ExecBlocks{
 	using namespace Node;
@@ -21,8 +24,6 @@ namespace ExecBlocks{
 	#undef SUPERDEST
 	#undef SUPERC
 	
-	using namespace Globals;
-	
 	//Original code from here on fully mashed into preprocessor directives :)
 	#define VANILLA(name,type)\
 	class name:CONCRETE,public BASE{\
@@ -36,6 +37,7 @@ namespace ExecBlocks{
 		name(ctype carg):BASET<type,dtype>::BASET(){this->d=new dtype(carg);}\
 		/*Make sure to only pass values allocated from the heap to this*/\
 		name(dtype* d):BASET<type,dtype>::BASET(){this->d=d;}\
+		name():BASET<type,dtype>::BASET(){this->d=new dtype();}\
 		~name(){delete this->d;}\
 	}
 	
@@ -53,7 +55,6 @@ namespace ExecBlocks{
 	VANILLA(getc,GETC);
 	VANILLA(putn,PUTN);
 	VANILLA(putc,PUTC);
-	VANILLA(lodv,LODV);
 	VANILLA(noop,NOOP);
 	VANILLA(halt,HALT);
 	
@@ -70,3 +71,5 @@ namespace ExecBlocks{
 	#undef BASET
 	#undef BASE
 }
+
+#endif //EXECBLOCKS_HPP

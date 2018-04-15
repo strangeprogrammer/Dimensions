@@ -1,3 +1,6 @@
+#ifndef LIBRARIES_HPP
+#define LIBRARIES_HPP
+
 #include <algorithm>
 #include <bitset>
 #include <cstdlib>
@@ -10,3 +13,5 @@
 #endif
 
 #define NULL nullptr
+
+#endif //LIBRARIES_HPP
