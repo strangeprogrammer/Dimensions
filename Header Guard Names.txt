@@ -1,15 +1,14 @@
 Notes:------------------------------------------------------------------------------------------------------------------------------
 
-Index of header-gaurd names for each header file used.
+Index of header-guard names for each header file used.
 These are used as part of the dependency resolution system.
-A filename is listed, then its header-gaurd name is listed on the same line after some tabulation marks.
+A filename is listed, then its header-guard name is listed on the same line after some tabulation marks.
 
 Format:-----------------------------------------------------------------------------------------------------------------------------
 
-Pathname					GaurdName
+Pathname					GuardName
 
 Listing:----------------------------------------------------------------------------------------------------------------------------
-
 
 ./Etc/InstructionType.hpp			INSTRUCTIONTYPE_HPP
 ./Etc/InstantiationType.hpp			INSTANTIATIONTYPE_HPP

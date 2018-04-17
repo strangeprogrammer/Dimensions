@@ -3,16 +3,13 @@ HEADERS		:= Parser.hpp Parser.proto
 SOURCES		:= Wrapper.cpp
 include make.i
 
-ifeq ($(TEST),true)
+ifeq ($(PARSER_DEBUG),true)
 GTARGET := testgrammar
 else
 GTARGET := grammar
 endif
 
-./flexcpp/Scanner.hpp : ./flexcpp/lexer
-	$(MAKE) -C ./flexcpp/ Scanner.hpp
-
-Parser.hpp Parser.proto : $(GTARGET) ./flexcpp/Scanner.hpp
+Parser.hpp Parser.proto : $(GTARGET) flexcpp/up.hpp
 	$(MAKE) clean
 	echo "Creating parser source files..."
 	bisonc++ -b Parser.proto -c Parser.hpp -i Parser.ihpp -p Parser.cpp $(GTARGET)
@@ -25,19 +22,17 @@ Wrapper.cpp : Parser.cpp
 
 #For testing and debugging purposes
 
-parsertest : testparser.o up.o
-	$(call testdebug,TEST)
+parsertest : testmain.o up.o
 	$(call testdebug,PARSER_DEBUG)
 	echo "Finalizing parser testing executable..."
 	$(OUT) $@ $^ ../../Etc/Globals.cpp
 
-testparser.o : testparser.cpp
-	$(call testdebug,TEST)
+testmain.o : testmain.cpp
 	$(call testdebug,PARSER_DEBUG)
 	echo "Compiling $$PWD/$@..."
 	$(COMP) $@ $^
 
-testparser.cpp : Parser.hpp
+testmain.cpp : Parser.hpp
 
 #Miscellaneous
 
@@ -55,9 +50,6 @@ clean ::
 
 clean ::
 	$(call cleanup,Parser.cpp)
-
-squeaky ::
-	$(call cleanup,testparser.o)
 
 squeaky ::
 	$(call cleanup,parsertest)

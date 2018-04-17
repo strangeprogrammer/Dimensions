@@ -19,7 +19,8 @@ enum Parser{
 	ENDWHILE=15,
 	NOOP	=16,
 	NUMBER	=17,
-	LETTER	=18
+	LETTER	=18,
+	DONE	=19
 };
 
 #endif //PARSINGTEST_H

@@ -3,6 +3,8 @@ HEADERS		:= Tube.hpp List.hpp
 SOURCES		:= 
 include make.i
 
+#For testing and debugging purposes
+
 macrotest : testmain.o ../../Etc/Globals.cpp
 	$(call testdebug,MACRO_DEBUG)
 	echo "Finalizing macrotest..."
@@ -13,8 +15,7 @@ testmain.o : testmain.cpp local.hpp all.hpp
 	echo "Compiling testmain.o..."
 	$(COMP) $@ $<
 
-squeaky ::
-	$(call cleanup,testmain.o)
+#Miscellaneous
 
 squeaky ::
 	$(call cleanup,macrotest)

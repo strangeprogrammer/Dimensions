@@ -61,5 +61,5 @@
 			#warning Parser_h_included
 		#endif
 	#endif //INCLUDE_DEBUG
-	#include "DepHierarchy.hpp" //Recursion occurs until the last header file is included
+	#include "all.root.hpp" //Recursion occurs until the last header file is included
 #endif //Parser_h_included

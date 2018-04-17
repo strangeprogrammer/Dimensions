@@ -14,9 +14,9 @@ Scanner.cpp Scanner.hpp : lexer
 	flexc++ -b Scanner.proto -c Scanner.hpp -i Scanner.ihpp -l Scanner.cpp lexer
 	echo "Editing scanner header file..."
 	{
-		echo '#ifdef DEBUG'
+		echo '#ifdef SCANNER_DEBUG'
 		echo '	#include "parsingTest.hpp"'
-		echo '#endif //DEBUG'
+		echo '#endif //SCANNER_DEBUG'
 	} >>./Scanner.ihpp
 
 Wrapper.cpp : Scanner.cpp
@@ -24,19 +24,17 @@ Wrapper.cpp : Scanner.cpp
 
 #For testing and debugging purposes
 
-scannertest : testscanner.o Scanner.cpp
+scannertest : testmain.o Scanner.cpp
 	$(call testdebug,SCANNER_DEBUG)
-	$(call testdebug,DEBUG)
 	echo "Finalizing scanner testing executable..."
 	$(OUT) $@ $^
 
-testscanner.o : testscanner.cpp
+testmain.o : testmain.cpp
 	$(call testdebug,SCANNER_DEBUG)
-	$(call testdebug,DEBUG)
 	echo "Compiling $$PWD/$@..."
 	$(COMP) $@ $^
 
-testscanner.cpp : Scanner.hpp
+testmain.cpp : Scanner.hpp
 
 #Miscellaneous
 
@@ -51,9 +49,6 @@ clean ::
 
 clean ::
 	$(call cleanup,Scanner.cpp)
-
-squeaky ::
-	$(call cleanup,testscanner.o)
 
 squeaky ::
 	$(call cleanup,scannertest)

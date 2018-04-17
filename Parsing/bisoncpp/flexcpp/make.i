@@ -1,1 +1,2 @@
-../make.i
+ROOT := ../$(ROOT)
+include $(ROOT)/make.i

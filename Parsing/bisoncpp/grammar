@@ -9,8 +9,8 @@ parser.parse();
 %scanner "flexcpp/Scanner.hpp"
 %default-actions std
 
-%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER
-%start commands
+%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER DONE
+%start input
 
 %union {
 	ExecBlocks::Instruction*	INST;
@@ -24,6 +24,12 @@ parser.parse();
 %type <BOOL> polarity
 
 %%
+input
+: commands DONE {
+	ACCEPT();
+}
+;
+
 commands
 : commands command
 | /*empty*/

@@ -1,12 +1,16 @@
-//Test string: (aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)
+/*Test string:
+(aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)
+([)(])
+
+
+*/
 
 //For debugging purposes only
-%print-tokens
+//%print-tokens
 
-%no-lines
 %scanner "flexcpp/Scanner.hpp"
-%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER
-%start commands
+%token LPAREN RPAREN MFORE MBACK VSTORE VFORE VBACK VZERO PLUS MINUS INASCII OUTNUM OUTASCII WHILE ENDWHILE NOOP NUMBER LETTER DONE
+%start input
 
 /*
 Invoke parser with:
@@ -15,6 +19,12 @@ parser.parse();
 */
 
 %%
+input
+: commands DONE {
+	ACCEPT();
+}
+;
+
 commands
 : commands command
 | /*empty*/
@@ -62,7 +72,11 @@ store_velocity
 ;
 
 arithmetic
-: NUMBER polarity
+: numeric polarity
+;
+
+numeric
+: NUMBER
 ;
 
 polarity

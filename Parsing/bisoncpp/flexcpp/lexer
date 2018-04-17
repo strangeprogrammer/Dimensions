@@ -1,4 +1,7 @@
-//Test string: ()><&#~@+-(%)(£)($)([)(])(/)0987654321Linux
+/*Test string:
+()	> <&#~@+-(%)(£)($)([)(])(/)0987654321Linux
+
+*/
 
 /*
 Invoke scanner with:
@@ -6,7 +9,7 @@ Scanner scanner;
 scanner.lex()
 */
 
-%no-lines
+%interactive
 
 %%
 \(		{
@@ -117,4 +120,10 @@ scanner.lex()
 			#endif //SCANNER_DEBUG
 			return Parser::LETTER;
 		}
-[ \n\t]+	/*ignore whitespace*/;
+\n		{
+			#ifdef SCANNER_DEBUG
+			std::cout << "DONE ";
+			#endif //SCANNER_DEBUG
+			return Parser::DONE;
+		}
+[ \t]+		/*ignore whitespace*/;
