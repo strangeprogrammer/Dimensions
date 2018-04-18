@@ -8,7 +8,7 @@ endif
 
 include make.i
 
-Scanner.cpp Scanner.hpp : lexer
+Scanner.cpp Scanner.proto Scanner.hpp : lexer
 	$(MAKE) clean
 	echo "Creating scanner source files..."
 	flexc++ -b Scanner.proto -c Scanner.hpp -i Scanner.ihpp -l Scanner.cpp lexer

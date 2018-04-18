@@ -1,6 +1,11 @@
 #include "all.hpp"
 
-//Test string: (aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)
+/*Test strings:
+(aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)
+([)(])
+
+
+*/
 
 using namespace std;
 using namespace ExecBlocks;
