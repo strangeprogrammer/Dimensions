@@ -5,9 +5,10 @@
 #include "InstantiationType.hpp"
 #include "InstructionType.hpp"
 #include "Libraries.hpp"
+#include "Macros.hpp"
 
 #ifdef LIBRARIES_HPP
-#ifdef PARSEENV_PROTO
+#ifdef PARSEENV_HPP
 #include "Globals.hpp"
-#endif //PARSEENV_PROTO
+#endif //PARSEENV_HPP
 #endif //LIBRARIES_HPP

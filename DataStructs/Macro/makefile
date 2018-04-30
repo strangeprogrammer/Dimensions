@@ -10,7 +10,7 @@ macrotest : testmain.o ../../Etc/Globals.cpp
 	echo "Finalizing macrotest..."
 	$(OUT) $@ $^
 
-testmain.o : testmain.cpp local.hpp all.hpp
+testmain.o : testmain.cpp local.hpp
 	$(call testdebug,MACRO_DEBUG)
 	echo "Compiling testmain.o..."
 	$(COMP) $@ $<

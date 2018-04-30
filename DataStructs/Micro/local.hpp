@@ -4,13 +4,13 @@
 
 #include "KVP.hpp"
 
-#ifdef GLOBALS_HPP
 #ifdef INSTANTIATIONTYPE_HPP
 #ifdef LIBRARIES_HPP
+#ifdef MACROS_HPP
 #include "Node.hpp"
+#endif //MACROS_HPP
 #endif //LIBRARIES_HPP
 #endif //INSTANTIATIONTYPE_HPP
-#endif //GLOBALS_HPP
 
 #ifdef NODE_HPP
 #ifdef INSTANTIATIONTYPE_HPP
@@ -34,7 +34,9 @@
 #ifdef EXECBLOCKS_PROTO
 #ifdef INSTANTIATIONTYPE_HPP
 #ifdef INSTRUCTIONTYPE_HPP
+#ifdef NODE_HPP
 #include "ExecBlocks.hpp"
+#endif //NODE_HPP
 #endif //INSTRUCTIONTYPE_HPP
 #endif //INSTANTIATIONTYPE_HPP
 #endif //EXECBLOCKS_PROTO

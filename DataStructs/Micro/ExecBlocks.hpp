@@ -9,36 +9,34 @@ namespace ExecBlocks{
 	#define BASE Instruction
 	#define BASET InstructionTemp
 	
-	#define SUPERC BASE::BASE
-	#define SUPERDEST BASE::~BASE
+	#define SUPER BASE::BASE
 	template <InstructionType IT,typename D> class BASET:ABSTRACT,public BASE{
 		public:
 		D* d;
 		
-		BASET(BASE* prev,BASE* succ):	SUPERC(prev,succ,IT){}
-		BASET(BASE* succ):		SUPERC(succ,IT){}
-		BASET():			SUPERC(IT){}
+		BASET(BASE* prev,BASE* succ):	SUPER(prev,succ,IT){}
+		BASET(BASE* succ):		SUPER(succ,IT){}
+		BASET():			SUPER(IT){}
 		
 		virtual ~BASET(){}
 	};
-	#undef SUPERDEST
-	#undef SUPERC
+	#undef SUPER
 	
 	//Original code from here on fully mashed into preprocessor directives :)
 	#define VANILLA(name,type)\
 	class name:CONCRETE,public BASE{\
 		public:\
-		name():BASE::BASE(type){}\
-		~name(){}\
+		name();\
+		~name();\
 	}
 	#define CHOCOLATE(name,type,ctype,carg,dtype)\
 	class name:CONCRETE,public BASET<type,dtype>{\
 		public:\
-		name(ctype carg):BASET<type,dtype>::BASET(){this->d=new dtype(carg);}\
+		name(ctype carg);\
 		/*Make sure to only pass values allocated from the heap to this*/\
-		name(dtype* d):BASET<type,dtype>::BASET(){this->d=d;}\
-		name():BASET<type,dtype>::BASET(){this->d=new dtype();}\
-		~name(){delete this->d;}\
+		name(dtype* d);\
+		name();\
+		~name();\
 	}
 	
 	#define AXESCONF(name,type) CHOCOLATE(name,type,long,cartesian,Axes)

@@ -4,51 +4,28 @@
 namespace Details{
 	class DetailsBase:ABSTRACT{};
 	
-	#define V long
-	#define K unsigned long
-	#define SUPER Linear::List<K,V>
+	#define U unsigned
+	#define SUPER Linear::List<U long,long>
 	#define SUPERC SUPER::List
 	class Axes:CONCRETE,public DetailsBase,public SUPER{
 		public:
-		//Deletes the old version or makes a new one if it doesn't exist
-		void set(K key,V value){
-			remove(key);
-			insert(key,value);
-			return;
-		}
-		
-		void init(unsigned int numaxes){
-			for(unsigned long i=0;i<numaxes;i++){
-				set(i,0);
-			}
-			return;
-		}
-		
-		Axes(unsigned int numaxes):SUPERC(){
-			init(numaxes);
-			return;
-		}
-		
-		Axes():Axes(0){}
-		
-		~Axes(){}
+		//Deletes the old version of a pair or makes a new one if it doesn't exist
+		void set(U long key,long value);
+		void init(U long numaxes);
+		Axes(U long numaxes);
+		Axes();
+		~Axes();
 	};
 	#undef SUPERC
 	#undef SUPER
-	#undef K
-	#undef V
+	#undef U
 	
 	class Number:CONCRETE,public DetailsBase{
 		public:
 		long value;
-		
-		Number(long value):value(value){}
-		Number():value(0){}
-		
-		~Number(){
-			value=0;
-			return;
-		}
+		Number(long value);
+		Number();
+		~Number();
 	};
 	
 	using namespace ExecBlocks;
@@ -56,14 +33,9 @@ namespace Details{
 	class Jump:CONCRETE,public DetailsBase{
 		public:
 		Instruction* target;
-		
-		Jump(Instruction* target):target(target){}
-		Jump():target(NULL){}
-		
-		~Jump(){
-			target=NULL;
-			return;
-		}
+		Jump(Instruction* target);
+		Jump();
+		~Jump();
 	};
 }
 

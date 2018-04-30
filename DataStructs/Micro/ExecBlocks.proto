@@ -5,29 +5,17 @@ namespace ExecBlocks{
 	using namespace Node;
 	
 	#define BASE Instruction
-	
-	#define SUPER DLN<InstructionType>
-	#define SUPERC SUPER::DLN
-	class BASE:ABSTRACT,public SUPER{
+	#define IT InstructionType
+	class BASE:ABSTRACT,public DLN<IT>{
 		public:
-		virtual void appendSucc(BASE* toappend){
-			SUPER::appendSucc(toappend);
-			return;
-		}
-		
-		virtual BASE* spliceSucc(){
-			return (BASE*)(SUPER::spliceSucc());
-		}
-		
-		BASE(BASE* prev,BASE* succ,InstructionType IT):	SUPERC(prev,succ,IT){}
-		BASE(BASE* succ,InstructionType IT):		SUPERC(succ,IT){}
-		BASE(InstructionType IT):			SUPERC(IT){}
-		
-		virtual ~BASE(){}
+		virtual void appendSucc(BASE* toappend);
+		virtual BASE* spliceSucc();
+		BASE(BASE* prev,BASE* succ,IT it);
+		BASE(BASE* succ,IT it);
+		BASE(IT it);
+		virtual ~BASE();
 	};
-	#undef SUPERC
-	#undef SUPER
-	
+	#undef IT
 	#undef BASE
 }
 

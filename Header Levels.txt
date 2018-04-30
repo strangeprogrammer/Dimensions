@@ -20,14 +20,9 @@ DataStructs/Micro/KVP.hpp
 Etc/InstantiationType.hpp
 Etc/InstructionType.hpp
 Etc/Libraries.hpp
-Parsing/ParseEnv.proto
-
-Etc/Globals.hpp
-	Etc/Libraries.hpp
-	Parsing/ParseEnv.proto
 
 DataStructs/Micro/Node.hpp
-	Etc/Globals.hpp
+	Etc/Macros.hpp
 	Etc/InstantiationType.hpp
 	Etc/Libraries.hpp
 
@@ -53,6 +48,7 @@ DataStructs/Micro/Details.hpp
 DataStructs/Micro/ExecBlocks.hpp
 	DataStructs/Micro/Details.hpp
 	DataStructs/Micro/ExecBlocks.proto
+	DataStructs/Micro/Node.hpp
 	Etc/InstantiationType.hpp
 	Etc/InstructionType.hpp
 
@@ -60,7 +56,10 @@ Parsing/ParseEnv.hpp
 	DataStructs/Macro/Tube.hpp
 	DataStructs/Micro/Details.hpp
 	DataStructs/Micro/ExecBlocks.hpp
-	Parsing/ParseEnv.proto
+
+Etc/Globals.hpp
+	Etc/Libraries.hpp
+	Parsing/ParseEnv.hpp
 
 Parsing/bisoncpp/Parser.proto
 	DataStructs/Micro/Details.hpp

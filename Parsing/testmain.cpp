@@ -1,10 +1,16 @@
 #include "all.hpp"
 
-/*Test strings:
-(aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)
-([)(])
+/*Test strings:									//Should:
+kjdfk										//Fail
+(jsrehd>)									//Fail
+([)										//Fail
+(])										//Fail
+(8934)										//Fail
+([)lkjdnfm(])									//Fail
+(aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)	//Succeed
+([)(])										//Succeed
 
-
+										//Succeed
 */
 
 using namespace std;
@@ -30,62 +36,61 @@ void printAxes(Axes* toprint){
 }
 
 int main(){
+	using namespace Globals;
 	Parser parser;
 	cout << "Enter Program Here: ";
 	bool retval=!parser.parse();
 	
-	Node::DLN<InstructionType>	*start=Globals::env.package(),
-					*temp;
+	Node::DLN<InstructionType>* start;
 	
-	while(start!=NULL){
-		if(retval){
+	if(retval){
+		while(env.chain.getSize()){
+			start=env.chain.frontpop();
 			cout << start << " ";
 			switch (start->datum){
-				case ADD:
-					cout << "ADD: " << (((add*)start)->d->value);
-					break;
-				case SUB:
-					cout << "SUB: " << (((sub*)start)->d->value);
-					break;
-				case HALT:
-					cout << "HALT";
-					break;
-				case GETC:
-					cout << "GETC";
-					break;
-				case PUTN:
-					cout << "PUTN";
-					break;
-				case PUTC:
-					cout << "PUTC";
-					break;
-				case NOOP:
-					cout << "NOOP";
-					break;
-				case TZJ:
-					cout << "TZJ: " << (((tzj*)start)->d->target);
-					break;
-				case JMP:
-					cout << "JMP: " << (((jmp*)start)->d->target);
-					break;
-				case MOV:
-					cout << "MOV:";
-					printAxes(((mov*)start)->d);
-					break;
-				case STRV:
-					cout << "STRV:";
-					printAxes(((strv*)start)->d);
-					break;
-				case SETV:
-					cout << "SETV:";
-					printAxes(((setv*)start)->d);
-					break;
+			case ADD:
+				cout << "ADD: " << (((add*)start)->d->value);
+				break;
+			case SUB:
+				cout << "SUB: " << (((sub*)start)->d->value);
+				break;
+			case HALT:
+				cout << "HALT";
+				break;
+			case GETC:
+				cout << "GETC";
+				break;
+			case PUTN:
+				cout << "PUTN";
+				break;
+			case PUTC:
+				cout << "PUTC";
+				break;
+			case NOOP:
+				cout << "NOOP";
+				break;
+			case TZJ:
+				cout << "TZJ: " << (((tzj*)start)->d->target);
+				break;
+			case JMP:
+				cout << "JMP: " << (((jmp*)start)->d->target);
+				break;
+			case MOV:
+				cout << "MOV:";
+				printAxes(((mov*)start)->d);
+				break;
+			case STRV:
+				cout << "STRV:";
+				printAxes(((strv*)start)->d);
+				break;
+			case SETV:
+				cout << "SETV:";
+				printAxes(((setv*)start)->d);
+				break;
 			}
 			cout << endl;
+			delete start;
 		}
-		temp=start->succ;
-		delete start;
-		start=temp;
 	}
 	return 0;
 }
