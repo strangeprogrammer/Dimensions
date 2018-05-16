@@ -79,7 +79,7 @@ motion
 	Axes* A=env.vectors.backpop();
 	Axes* B=env.vectors.backpop();
 	KVP<unsigned long,long>* temp;
-	while(temp=B->rmrandom()){
+	while(temp=B->rmmin()){
 		A->set(temp->key,-1);
 		delete temp;
 	}
@@ -106,12 +106,12 @@ velocity
 	Axes* B=env.vectors.backpop();
 	Axes* C=env.vectors.backpop();
 	KVP<unsigned long,long>* temp;
-	while(temp=B->rmrandom()){
+	while(temp=B->rmmin()){
 		A->set(temp->key,-1);
 		delete temp;
 	}
 	delete B;
-	while(temp=C->rmrandom()){
+	while(temp=C->rmmin()){
 		A->set(temp->key,0);
 		delete temp;
 	}

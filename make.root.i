@@ -11,8 +11,10 @@ SHELL		:= /bin/bash
 #Make the variable dump the default action for safety purposes
 .DEFAULT_GOAL	:= listvars
 
-#Make 'make' be silent
+#Make 'make' be silent when debugging is disabled
+ifneq ($(MAKE_DEBUG),true)
 .SILENT :
+endif
 
 #Disable implicit rules
 .SUFFIXES :
@@ -23,16 +25,17 @@ export SHELL .SHELLFLAGS							#These require explicit exportion
 unexport ROOT SUBFOLDERS HEADERS SOURCES OBJECTS UPO EMPTYOBJ UPHPP ALLHPP	#Don't export site-specific variables
 
 #Targets that aren't real files
-.PHONY : listvars clean squeaky compile force
+.PHONY : listvars clean squeaky force
 
 #Compilation stuff
 
 ifeq ($(DEBUG),true)
 DBGFLAGS	:= $(DBGFLAGS) -ggdb -DDEBUG=
+else
+ANTIFLAGS	:= -Wno-pedantic -Wno-unused-parameter -Wno-parentheses
 endif
 COMPILER	:= g++
 CFLAGS		:= -std=c++11 -Wall -Wextra
-ANTIFLAGS	:= -Wno-pedantic -Wno-unused-parameter -Wno-parentheses # enable these flags for production builds
 CPP		:= $(COMPILER) $(CFLAGS) $(ANTIFLAGS) $(DBGFLAGS)
 COMP		:= $(CPP) -c -o
 LINK		:= ld -r -o
@@ -81,9 +84,7 @@ up.o : $(OBJECTS) $(UPO) $(EMPTYOBJ)
 
 $(UPO) : force
 	echo "Checking directory $$PWD/$(dir $@) for object updates..."
-	$(MAKE) -C ./$(dir $@) up.o
-
-compile : $(OBJECTS)
+	$(MAKE) -C $(dir $@) up.o
 
 $(OBJECTS) : %.o : %.cpp
 	echo "Compiling $$PWD/$@..."
@@ -91,20 +92,17 @@ $(OBJECTS) : %.o : %.cpp
 
 #Header file stuff
 
-all.hpp ::
-	echo "Checking $$PWD/all.hpp for updates..."
-
 ifeq ($(ROOT),./)
 all.root.hpp : up.hpp
 	$(call touche)
 
-all.hpp :: all.root.hpp
+all.hpp : all.root.hpp
 	$(call touche)
 else
 ../all.hpp : force
-	$(MAKE) -C ../ all.hpp
+	$(MAKE) -C .. all.hpp
 
-all.hpp :: ../all.hpp
+all.hpp : ../all.hpp
 	$(call touche)
 endif
 
@@ -113,7 +111,7 @@ up.hpp : local.hpp $(UPHPP)
 
 $(UPHPP) : force
 	echo "Checking directory $$PWD/$(dir $@) for header updates..."
-	$(MAKE) -C ./$(dir $@) up.hpp
+	$(MAKE) -C $(dir $@) up.hpp
 
 local.hpp : $(HEADERS)
 	$(call touche)

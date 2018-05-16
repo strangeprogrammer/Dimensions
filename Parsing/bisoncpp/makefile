@@ -3,6 +3,8 @@ HEADERS		:= Parser.hpp Parser.proto
 SOURCES		:= Wrapper.cpp
 include make.i
 
+#FIXME the file creation process just below this note
+
 ifeq ($(PARSER_DEBUG),true)
 GTARGET := testgrammar
 else
@@ -14,7 +16,7 @@ Parser.hpp Parser.proto : $(GTARGET) flexcpp/up.hpp
 	echo "Creating parser source files..."
 	bisonc++ -b Parser.proto -c Parser.hpp -i Parser.ihpp -p Parser.cpp $(GTARGET)
 
-Parser.cpp : Parser.hpp
+Parser.cpp : Parser.hpp Parser.proto
 	$(call touche)
 
 Wrapper.cpp : Parser.cpp
@@ -50,6 +52,9 @@ clean ::
 
 clean ::
 	$(call cleanup,Parser.cpp)
+
+squeaky ::
+	$(call cleanup,testmain.o)
 
 squeaky ::
 	$(call cleanup,parsertest)

@@ -8,6 +8,9 @@ endif
 
 include make.i
 
+../Parser.hpp ../Parser.proto : ../grammar
+	$(MAKE) -C ../ Parser.hpp Parser.proto
+
 Scanner.cpp Scanner.proto Scanner.hpp : lexer
 	$(MAKE) clean
 	echo "Creating scanner source files..."
@@ -19,7 +22,7 @@ Scanner.cpp Scanner.proto Scanner.hpp : lexer
 		echo '#endif //SCANNER_DEBUG'
 	} >>./Scanner.ihpp
 
-Wrapper.cpp : Scanner.cpp
+Wrapper.cpp : Scanner.cpp ../Parser.hpp ../Parser.proto
 	$(call touche)
 
 #For testing and debugging purposes
@@ -49,6 +52,9 @@ clean ::
 
 clean ::
 	$(call cleanup,Scanner.cpp)
+
+squeaky ::
+	$(call cleanup,testmain.o)
 
 squeaky ::
 	$(call cleanup,scannertest)

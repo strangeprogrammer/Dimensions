@@ -20,6 +20,7 @@ DataStructs/Micro/KVP.hpp
 Etc/InstantiationType.hpp
 Etc/InstructionType.hpp
 Etc/Libraries.hpp
+Etc/Macros.hpp
 
 DataStructs/Micro/Node.hpp
 	Etc/Macros.hpp
@@ -43,8 +44,9 @@ DataStructs/Micro/Details.hpp
 	DataStructs/Macro/List.hpp
 	DataStructs/Micro/ExecBlocks.proto
 	Etc/InstantiationType.hpp
-	Etc/Libraries.hpp
 
+DataStructs/Micro/Cell.hpp
+	DataStructs/Micro/Details.hpp
 DataStructs/Micro/ExecBlocks.hpp
 	DataStructs/Micro/Details.hpp
 	DataStructs/Micro/ExecBlocks.proto
@@ -77,4 +79,11 @@ Parsing/bisoncpp/Parser.hpp
 	Parsing/bisoncpp/flexcpp/Scanner.hpp
 
 Execution/RunEnv.hpp
-	//TODO: List dependencies here
+	DataStructs/Micro/Cell.hpp
+	DataStructs/Micro/Details.hpp
+	DataStructs/Micro/ExecBlocks.proto
+	DataStructs/Storage.hpp
+
+Execution/ExecTools.hpp
+	Execution/RunEnv.hpp
+	Parsing/ParseEnv.hpp

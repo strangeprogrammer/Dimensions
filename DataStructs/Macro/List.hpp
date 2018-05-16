@@ -6,68 +6,126 @@ namespace Linear{
 	#define PAIR KVP<K,V>
 	template <typename K,typename V> class List:public Storage<K,V>{
 		private:
-		Tube<PAIR> t;
+		Tube<PAIR> l,r;
 		
-		void locate(K key){
+		//For all locating functions, the front of 'l' will contain the closest key less than or equal to the given key (if any)
+		
+		void up(K key){
 			PAIR temp;
-			for(unsigned long i=0;i<getSize();i++){
-				t.backpush(temp=t.frontpop());
-				if(temp.unlock(key)){
+			while(r.getSize()){
+				temp=r.frontpop();
+				if(temp.key<=key){
+					l.frontpush(temp);
+				}else{
+					r.frontpush(temp);
 					break;
 				}
 			}
-			return;
+		}
+		
+		void down(K key){
+			PAIR temp;
+			while(l.getSize()){
+				temp=l.frontpop();
+				if(key<temp.key){
+					r.frontpush(temp);
+				}else{
+					l.frontpush(temp);
+					return;
+				}
+			}
+		}
+		
+		void locate(K key){
+			if(l.getSize()){
+				PAIR temp=l.frontpop();
+				if(temp.key<key){
+					l.frontpush(temp);
+					up(key);
+				}else if(key<temp.key){
+					r.frontpush(temp);
+					down(key);
+				}else{
+					l.frontpush(temp);
+				}
+			}else{
+				up(key);
+			}
+		}
+		
+		inline void locatemin(){
+			while(l.getSize()){
+				r.frontpush(l.frontpop());
+			}
+			if(r.getSize()){
+				l.frontpush(r.frontpop());
+			}
+		}
+		
+		inline void locatemax(){
+			while(r.getSize()){
+				l.frontpush(r.frontpop());
+			}
 		}
 		
 		public:
-		virtual void insert(K key,V value){
-			t.frontpush(PAIR(key,value));
-			return;
+		void insert(PAIR pair){
+			locate(pair.key);
+			l.frontpush(pair);
 		}
 		
-		virtual V* find(K key){
-			V* retval=NULL;
-			if(getSize()){
-				locate(key);
-				PAIR temp=t.backpop();
-				if(temp.unlock(key)){
-					retval=&(temp.value);
+		void insert(K key,V value){
+			insert(typename PAIR::KVP(key,value));
+		}
+		
+		V* find(K key){
+			locate(key);
+			if(l.getSize()){
+				PAIR temp=l.frontpeek();
+				if(temp.key==key){
+					V* retval=new V();
+					*retval=temp.value;
+					return retval;
 				}
-				t.frontpush(temp);
+			}
+			return NULL;
+		}
+		
+		V* remove(K key){
+			V* retval=find(key);
+			if(retval!=NULL){
+				l.frontpop();
 			}
 			return retval;
 		}
 		
-		virtual void remove(K key){
-			if(getSize()){
-				locate(key);
-				PAIR temp=t.backpop();
-				if(!temp.unlock(key)){
-					t.frontpush(temp);
-				}
+		PAIR* rmmin(){
+			locatemin();
+			if(l.getSize()){
+				return new PAIR(l.frontpop());
 			}
+			return NULL;
+		}
+		
+		PAIR* rmmax(){
+			locatemax();
+			if(l.getSize()){
+				return new PAIR(l.frontpop());
+			}
+			return NULL;
+		}
+		
+		void purge(){
+			l.purge();
+			r.purge();
 			return;
 		}
 		
-		virtual PAIR* rmrandom(){
-			PAIR* retval=NULL;
-			if(getSize()){
-				retval=new PAIR();
-				*retval=t.backpop();
-			}
-			return retval;
+		unsigned long getSize(){
+			return l.getSize()+r.getSize();
 		}
 		
-		virtual void purge(){
-			t.purge();
-			return;
-		}
-		
-		virtual unsigned long getSize(){
-			return t.getSize();
-		}
-		
-		virtual ~List(){}
+		List():l(),r(){}
 	};
 	#undef PAIR
 }

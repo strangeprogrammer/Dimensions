@@ -4,19 +4,32 @@
 namespace Details{
 	class DetailsBase:ABSTRACT{};
 	
+	//TODO: TEST ALL THE NEW STUFF PUT INTO 'Axes'
 	#define U unsigned
 	#define SUPER Linear::List<U long,long>
-	#define SUPERC SUPER::List
 	class Axes:CONCRETE,public DetailsBase,public SUPER{
 		public:
 		//Deletes the old version of a pair or makes a new one if it doesn't exist
 		void set(U long key,long value);
+		void set(KVP<U long,long> pair);
 		void init(U long numaxes);
+		void transfer(Axes* other);
+		void projection(Axes* other);
+		void biprojection(Axes* other);
+		Axes* clone();
+		long compareTo(Axes* other);
+		bool operator==(Axes& other);
+		bool operator!=(Axes& other);
+		bool operator<(Axes& other);
+		bool operator<=(Axes& other);
+		bool operator>(Axes& other);
+		bool operator>=(Axes& other);
+		Axes& operator+=(Axes& other);
+		Axes& operator-=(Axes& other);
 		Axes(U long numaxes);
 		Axes();
 		~Axes();
 	};
-	#undef SUPERC
 	#undef SUPER
 	#undef U
 	

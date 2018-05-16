@@ -2,23 +2,9 @@
 #warning
 #endif //INCLUDE_DEBUG
 
-#include "KVP.hpp"
-
-#ifdef INSTANTIATIONTYPE_HPP
-#ifdef LIBRARIES_HPP
-#ifdef MACROS_HPP
-#include "Node.hpp"
-#endif //MACROS_HPP
-#endif //LIBRARIES_HPP
-#endif //INSTANTIATIONTYPE_HPP
-
-#ifdef NODE_HPP
-#ifdef INSTANTIATIONTYPE_HPP
-#ifdef INSTRUCTIONTYPE_HPP
-#include "ExecBlocks.proto"
-#endif //INSTRUCTIONTYPE_HPP
-#endif //INSTANTIATIONTYPE_HPP
-#endif //NODE_HPP
+#ifdef DETAILS_HPP
+#include "Cell.hpp"
+#endif //DETAILS_HPP
 
 #ifdef LIST_HPP
 #ifdef EXECBLOCKS_PROTO
@@ -41,3 +27,21 @@
 #endif //INSTANTIATIONTYPE_HPP
 #endif //EXECBLOCKS_PROTO
 #endif //DETAILS_HPP
+
+#ifdef NODE_HPP
+#ifdef INSTANTIATIONTYPE_HPP
+#ifdef INSTRUCTIONTYPE_HPP
+#include "ExecBlocks.proto"
+#endif //INSTRUCTIONTYPE_HPP
+#endif //INSTANTIATIONTYPE_HPP
+#endif //NODE_HPP
+
+#include "KVP.hpp"
+
+#ifdef INSTANTIATIONTYPE_HPP
+#ifdef LIBRARIES_HPP
+#ifdef MACROS_HPP
+#include "Node.hpp"
+#endif //MACROS_HPP
+#endif //LIBRARIES_HPP
+#endif //INSTANTIATIONTYPE_HPP

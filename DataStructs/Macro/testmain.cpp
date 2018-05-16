@@ -199,21 +199,37 @@ int main(){
 	cout << "Inserted K=5:V=20" << endl;
 	cout << "Size:                      " << l.getSize()		<< endl;
 	
-	cout << "Found K=5:                 " << *(l.find(5))		<< endl;
+	int* ptr=l.find(5);
+	cout << "Found K=5:                 " << *ptr		<< endl;
+	delete ptr;
 	
-	l.remove(5);
-	cout << "Removed K=5" << endl;
+	ptr=l.remove(5);
+	cout << "Removed K=5:V=" << *ptr << endl;
 	cout << "Size:                      " << l.getSize()		<< endl;
+	delete ptr;
 	
 	l.insert(0,1);
 	l.insert(2,3);
 	l.insert(4,5);
 	l.insert(6,7);
-	cout << "Inserted K=0:V=1 K=2:V=3 K=4:V=5 K=6:V=7" << endl;
+	cout <<
+	"Inserted" << endl <<
+	"\tK=0:V=1" << endl <<
+	"\tK=2:V=3" << endl <<
+	"\tK=4:V=5" << endl <<
+	"\tK=6:V=7" << endl;
 	cout << "Size:                      " << l.getSize()		<< endl;
 	
-	KVP<int,int>* temp=l.rmrandom();
-	cout << "RmRandom K=" << temp->key << ":V=" << temp-> value	<< endl;
+	KVP<int,int>* temp=l.rmmin();
+	cout << "RmMin K=" << temp->key << ":V=" << temp-> value	<< endl;
+	cout << "Size:                      " << l.getSize()		<< endl;
+	delete temp;
+	temp=l.rmmax();
+	cout << "RmMax K=" << temp->key << ":V=" << temp-> value	<< endl;
+	cout << "Size:                      " << l.getSize()		<< endl;
+	delete temp;
+	temp=l.rmmin();
+	cout << "RmMin K=" << temp->key << ":V=" << temp-> value	<< endl;
 	cout << "Size:                      " << l.getSize()		<< endl;
 	delete temp;
 	

@@ -1,7 +1,6 @@
 #ifndef EXECBLOCKS_HPP
 #define EXECBLOCKS_HPP
 
-//If you think this code is really squashed down into preprocessor, just wait until you see what I can REALLY do...
 namespace ExecBlocks{
 	using namespace Node;
 	using namespace Details;

@@ -9,7 +9,6 @@ kjdfk										//Fail
 ([)lkjdnfm(])									//Fail
 (aA>zA<)(&F#F~F@)(#~@)(0987654321+)(0-)(%)(£)($)([)([)([)(1-)(])(])(])([)(])(/)	//Succeed
 ([)(])										//Succeed
-
 										//Succeed
 */
 
@@ -23,12 +22,12 @@ void printAxes(Axes* toprint){
 	unsigned long k;
 	long v;
 	Axes* backup=new Axes();
-	while(temp=toprint->rmrandom()){
+	while(temp=toprint->rmmin()){
 		backup->insert(k=temp->key,v=temp->value);
 		delete temp;
 		cout << endl << "\t" << ((char)k) << " " << v;
 	}
-	while(temp=backup->rmrandom()){
+	while(temp=backup->rmmin()){
 		toprint->insert(temp->key,temp->value);
 		delete temp;
 	}

@@ -1,6 +1,6 @@
 //Uses recursion to include header files of different dependency levels (unbelievably useful for dependency resolution)
 
-#ifndef Parser_h_included
+#ifndef RUNENV_HPP
 	#include "up.hpp"
 	#ifdef INCLUDE_DEBUG
 		#ifdef INSTRUCTIONTYPE_HPP
@@ -15,6 +15,12 @@
 		#ifdef LIBRARIES_HPP
 			#warning LIBRARIES_HPP
 		#endif
+		#ifdef MACROS_HPP
+			#warning MACROS_HPP
+		#endif
+		#ifdef EXECTOOLS_HPP
+			#warning EXECTOOLS_HPP
+		#endif
 		#ifdef RUNENV_HPP
 			#warning RUNENV_HPP
 		#endif
@@ -26,6 +32,9 @@
 		#endif
 		#ifdef TUBE_HPP
 			#warning TUBE_HPP
+		#endif
+		#ifdef CELL_HPP
+			#warning CELL_HPP
 		#endif
 		#ifdef DETAILS_HPP
 			#warning DETAILS_HPP
@@ -41,9 +50,6 @@
 		#endif
 		#ifdef EXECBLOCKS_HPP
 			#warning EXECBLOCKS_HPP
-		#endif
-		#ifdef PARSEENV_PROTO
-			#warning PARSEENV_PROTO
 		#endif
 		#ifdef PARSEENV_HPP
 			#warning PARSEENV_HPP

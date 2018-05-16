@@ -6,18 +6,22 @@ template <typename K,typename V> class KVP{
 	K key;
 	V value;
 	
-	long compareTo(KVP<K,V>* against){
-		return key-(against->key);
-	}
-	
-	bool unlock(K key){
-		return !((this->key)-key);
+	long compareTo(const KVP<K,V>& against){
+		if(key<(against.key)){
+			return -1;
+		}else if((against.key)<key){
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 	
 	KVP(K key,V value){
 		this->key=key;
 		this->value=value;
 	}
+	
+	KVP(const KVP<K,V>& orig):KVP(orig.key,orig.value){}
 	
 	KVP(){}
 	
